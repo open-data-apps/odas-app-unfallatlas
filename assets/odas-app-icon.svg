@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7eb8f7"/>
+      <stop offset="100%" stop-color="#3d3fa5"/>
+    </linearGradient>
+
+    <linearGradient id="carGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="1.0"/>
+      <stop offset="100%" stop-color="#cbd5e1" stop-opacity="0.95"/>
+    </linearGradient>
+
+    <radialGradient id="impactGrad" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#dc2626"/>
+    </radialGradient>
+
+    <filter id="shadow" x="-20%" y="-15%" width="145%" height="150%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#1e1b4b" flood-opacity="0.45"/>
+    </filter>
+
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="512" height="512" rx="108" ry="108" fill="url(#bgGrad)"/>
+
+  <rect x="56" y="310" width="400" height="28" rx="14" ry="14" fill="white" opacity="0.25"/>
+
+  <rect x="80" y="320" width="60" height="8" rx="4" fill="white" opacity="0.5"/>
+  <rect x="180" y="320" width="60" height="8" rx="4" fill="white" opacity="0.5"/>
+  <rect x="280" y="320" width="60" height="8" rx="4" fill="white" opacity="0.5"/>
+  <rect x="380" y="320" width="60" height="8" rx="4" fill="white" opacity="0.5"/>
+
+  <g transform="translate(90,200)" filter="url(#shadow)">
+    <rect x="0" y="40" width="130" height="64" rx="10" ry="10" fill="url(#carGrad)"/>
+    <rect x="20" y="10" width="88" height="40" rx="10" ry="10" fill="url(#carGrad)"/>
+    <rect x="26" y="14" width="76" height="32" rx="6" ry="6" fill="#3b82f6" opacity="0.6"/>
+    <circle cx="24" cy="106" r="18" fill="#1e293b"/>
+    <circle cx="24" cy="106" r="8" fill="#94a3b8"/>
+    <circle cx="106" cy="106" r="18" fill="#1e293b"/>
+    <circle cx="106" cy="106" r="8" fill="#94a3b8"/>
+    <rect x="118" y="52" width="14" height="10" rx="3" fill="#fef08a" opacity="0.9"/>
+    <rect x="118" y="68" width="14" height="10" rx="3" fill="#fef08a" opacity="0.9"/>
+  </g>
+
+  <g transform="translate(296,200) scale(-1,1) translate(-130,0)" filter="url(#shadow)">
+    <rect x="0" y="40" width="130" height="64" rx="10" ry="10" fill="url(#carGrad)" opacity="0.85"/>
+    <rect x="20" y="10" width="88" height="40" rx="10" ry="10" fill="url(#carGrad)" opacity="0.85"/>
+    <rect x="26" y="14" width="76" height="32" rx="6" ry="6" fill="#7c3aed" opacity="0.6"/>
+    <circle cx="24" cy="106" r="18" fill="#1e293b"/>
+    <circle cx="24" cy="106" r="8" fill="#94a3b8"/>
+    <circle cx="106" cy="106" r="18" fill="#1e293b"/>
+    <circle cx="106" cy="106" r="8" fill="#94a3b8"/>
+    <rect x="118" y="52" width="14" height="10" rx="3" fill="#fef08a" opacity="0.9"/>
+    <rect x="118" y="68" width="14" height="10" rx="3" fill="#fef08a" opacity="0.9"/>
+  </g>
+
+  <circle cx="256" cy="268" r="48" fill="url(#impactGrad)" opacity="0.92" filter="url(#glow)"/>
+
+  <g stroke="#fbbf24" stroke-width="6" stroke-linecap="round" opacity="0.85">
+    <line x1="256" y1="205" x2="256" y2="188"/>
+    <line x1="256" y1="331" x2="256" y2="348"/>
+    <line x1="193" y1="268" x2="176" y2="268"/>
+    <line x1="319" y1="268" x2="336" y2="268"/>
+    <line x1="211" y1="223" x2="199" y2="211"/>
+    <line x1="301" y1="223" x2="313" y2="211"/>
+    <line x1="211" y1="313" x2="199" y2="325"/>
+    <line x1="301" y1="313" x2="313" y2="325"/>
+  </g>
+
+  <g stroke="white" stroke-width="10" stroke-linecap="round">
+    <line x1="238" y1="250" x2="274" y2="286"/>
+    <line x1="274" y1="250" x2="238" y2="286"/>
+  </g>
+</svg>
