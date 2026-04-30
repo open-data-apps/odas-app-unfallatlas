@@ -14,9 +14,17 @@
     "Filter für Kommune, Schweregrad, beteiligte Verkehrsarten und Lichtverhältnisse ermöglichen eine gezielte Analyse.",
     ""
   ],
-  "tags-funktion": ["Kartenvisualisierung", "Sicherheitsanalyse"],
-  "tags-dateityp": ["JSON"],
-  "tags-datenart": ["Verkehr", "Unfall"],
+  "tags-funktion": [
+    "Kartenvisualisierung",
+    "Sicherheitsanalyse"
+  ],
+  "tags-dateityp": [
+    "JSON"
+  ],
+  "tags-datenart": [
+    "Verkehr",
+    "Unfall"
+  ],
   "screenshots": [
     "/assets/Desktop_Screenshot.png",
     "/assets/Mobile_Screenshot.png"
@@ -141,7 +149,10 @@
       "format": {
         "typ": "markdown"
       },
-      "default": ["_multiline_", "Alle Daten sind geschützt."],
+      "default": [
+        "_multiline_",
+        "Alle Daten sind geschützt."
+      ],
       "erforderlich": "ja"
     },
     "urlDaten": {
@@ -180,10 +191,18 @@
       "hilfe": "Angabe der App-Sprache",
       "format": {
         "typ": "dropdown",
-        "optionen": ["de"],
+        "optionen": [
+          "de"
+        ],
         "default": "de"
       },
       "erforderlich": "ja"
     }
+  },
+  "daten": {
+    "beschreibung": "Die Unfallatlas-App verarbeitet konfigurierbare Open-Data-Ressourcen aus dem Open Data Portal (z.B. JSON- oder CSV-Endpunkte).",
+    "schema": "",
+    "beispiel": "",
+    "beispiel-url": ""
   }
 }
