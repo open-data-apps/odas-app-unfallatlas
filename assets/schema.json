@@ -1,0 +1,167 @@
+{
+  "$schema": "https://frictionlessdata.io/schemas/table-schema.json",
+  "name": "odas-app-unfallatlas",
+  "title": "Unfallatlas",
+  "fields": [
+    {
+      "name": "kommune",
+      "type": "string",
+      "description": "Wird in der App verwendet",
+      "constraints": {
+        "required": true
+      }
+    },
+    {
+      "name": "geo_point_2d",
+      "type": "string",
+      "description": "Wird in der App verwendet",
+      "constraints": {
+        "required": true
+      }
+    },
+    {
+      "name": "geo_shape",
+      "type": "string",
+      "description": "Optionales Feld",
+      "constraints": {
+        "required": false
+      }
+    },
+    {
+      "name": "umonat",
+      "type": "string",
+      "description": "Wird in der App verwendet",
+      "constraints": {
+        "required": true
+      }
+    },
+    {
+      "name": "ustunde",
+      "type": "string",
+      "description": "Wird in der App verwendet",
+      "constraints": {
+        "required": true
+      }
+    },
+    {
+      "name": "uwochentag",
+      "type": "string",
+      "description": "Wird in der App verwendet",
+      "constraints": {
+        "required": true
+      }
+    },
+    {
+      "name": "ukategorie",
+      "type": "string",
+      "description": "Wird in der App verwendet",
+      "constraints": {
+        "required": true
+      }
+    },
+    {
+      "name": "uart",
+      "type": "string",
+      "description": "Wird in der App verwendet",
+      "constraints": {
+        "required": true
+      }
+    },
+    {
+      "name": "utyp1",
+      "type": "string",
+      "description": "Wird in der App verwendet",
+      "constraints": {
+        "required": true
+      }
+    },
+    {
+      "name": "ulichtverh",
+      "type": "string",
+      "description": "Wird in der App verwendet",
+      "constraints": {
+        "required": true
+      }
+    },
+    {
+      "name": "istrad",
+      "type": "string",
+      "description": "Wird in der App verwendet",
+      "constraints": {
+        "required": true
+      }
+    },
+    {
+      "name": "istpkw",
+      "type": "string",
+      "description": "Wird in der App verwendet",
+      "constraints": {
+        "required": true
+      }
+    },
+    {
+      "name": "istfuss",
+      "type": "string",
+      "description": "Wird in der App verwendet",
+      "constraints": {
+        "required": true
+      }
+    },
+    {
+      "name": "istkrad",
+      "type": "string",
+      "description": "Wird in der App verwendet",
+      "constraints": {
+        "required": true
+      }
+    },
+    {
+      "name": "istgkfz",
+      "type": "string",
+      "description": "Wird in der App verwendet",
+      "constraints": {
+        "required": true
+      }
+    },
+    {
+      "name": "istsonstig",
+      "type": "string",
+      "description": "Optionales Feld",
+      "constraints": {
+        "required": false
+      }
+    },
+    {
+      "name": "uland",
+      "type": "string",
+      "description": "Optionales Feld",
+      "constraints": {
+        "required": false
+      }
+    },
+    {
+      "name": "uregbez",
+      "type": "string",
+      "description": "Optionales Feld",
+      "constraints": {
+        "required": false
+      }
+    },
+    {
+      "name": "ukreis",
+      "type": "string",
+      "description": "Optionales Feld",
+      "constraints": {
+        "required": false
+      }
+    },
+    {
+      "name": "iststrasse",
+      "type": "string",
+      "description": "Optionales Feld",
+      "constraints": {
+        "required": false
+      }
+    }
+  ]
+}
