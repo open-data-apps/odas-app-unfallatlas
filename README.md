@@ -5,6 +5,12 @@ Die App entspricht der Open Data App-Spezifikation und ist als ODAS App V1 aufge
 
 ---
 
+## Für wen ist diese App?
+
+Diese App richtet sich an Bürger:innen, die sich für Verkehrssicherheit interessieren, sowie an Kommunen und Verkehrsplaner:innen. Sie benötigen keine Datenfachkenntnisse – einfach Kommune eingeben und Unfallschwerpunkte erkunden.
+
+---
+
 ## Funktionen
 
 ![Screenshot Desktop](assets/Desktop_Screenshot.png)

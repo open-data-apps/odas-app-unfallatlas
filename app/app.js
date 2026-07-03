@@ -20,6 +20,7 @@ function app(configdata = {}, enclosingHtmlDivElement) {
   enclosingHtmlDivElement.innerHTML = `
     <div style="background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.1);
                 padding:.625rem 0 .75rem;margin-bottom:.75rem;overflow:hidden;">
+      <div class="text-end px-3 mb-1"><small id="ua-datenstand" class="text-muted"></small></div>
       <div class="row g-2 align-items-end justify-content-center mx-0 px-2">
 
           <div class="col-12 col-md-4">
@@ -101,7 +102,7 @@ function app(configdata = {}, enclosingHtmlDivElement) {
     </div>
   `;
 
-  loadLeaflet().then(() => initMap(enclosingHtmlDivElement, BASE_URL));
+  loadLeaflet().then(() => initMap(enclosingHtmlDivElement, BASE_URL, configdata));
   return null;
 }
 
@@ -129,7 +130,7 @@ function loadLeaflet() {
 }
 
 /* ── Karte und Logik initialisieren ── */
-function initMap(el, BASE_URL) {
+function initMap(el, BASE_URL, configdata) {
   const map = L.map("unfall-map").setView([51.198, 6.687], 11);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution:
@@ -370,6 +371,7 @@ function initMap(el, BASE_URL) {
           </tbody>
         </table>
       </div>
+      ${renderWeitereInfos(configdata)}
     `;
 
     listEl.querySelectorAll("tbody tr").forEach((row) => {
@@ -426,6 +428,23 @@ function initMap(el, BASE_URL) {
     let total = null;
     let allResults = [];
     const listEl = el.querySelector("#unfall-list");
+
+    /* ── Schale 4: Catalog-Metadaten laden ── */
+    var catalogUrl = BASE_URL.replace(/\/records$/, "").replace(/\/api\/explore\/v2\.\d\/catalog\/datasets\//, function(m) {
+      return m;
+    });
+    if (!catalogUrl.endsWith("/")) catalogUrl += "/";
+    var datasetId = BASE_URL.split("/catalog/datasets/")[1]?.split("/")[0] || "";
+    if (datasetId) {
+      var catUrl = BASE_URL.substring(0, BASE_URL.indexOf("/catalog/datasets/")) + "/catalog/datasets/" + datasetId;
+      fetch(catUrl).then(function(r) { return r.json(); }).then(function(meta) {
+        var stand = extractDatenStand(meta);
+        if (stand) {
+          var badge = document.getElementById("ua-datenstand");
+          if (badge) badge.textContent = "Aktualisiert: " + stand;
+        }
+      }).catch(function() {});
+    }
 
     while (true) {
       const params = new URLSearchParams({
@@ -623,6 +642,37 @@ function initMap(el, BASE_URL) {
       map.invalidateSize();
     });
   }
+}
+
+/* ── Schale 4: escapeHtml ── */
+function escapeHtml(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+/* ── Schale 4: Weiterführende Links ── */
+function renderWeitereInfos(cfg) {
+  var links = ((cfg && cfg.weiterfuehrendeLinks) || "").trim();
+  if (!links) return "";
+  return (
+    '<section class="ua-weitere-infos mt-3">' +
+    '<h2 class="h5 mb-2">Weitere Informationen</h2>' +
+    '<div class="ua-weitere-infos-content">' +
+    links +
+    "</div></section>"
+  );
+}
+
+/* ── Schale 4: Datenfrische aus ODS Catalog ── */
+function extractDatenStand(responseData) {
+  var modified = responseData?.metas?.modified || null;
+  if (!modified) return null;
+  var d = new Date(modified);
+  return isNaN(d.getTime()) ? null : d.toLocaleDateString("de-DE");
 }
 
 /*

@@ -3,16 +3,18 @@
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "unfallatlas",
   "name": "Unfallatlas",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "assets/odas-app-icon.svg",
   "kurzbeschreibung": "Interaktive Karte und Analyse von Verkehrsunfällen (Datensatz 2022).",
   "beschreibung": [
     "_multiline_",
-    "Die Unfallatlas-App visualisiert Verkehrsunfälle auf einer interaktiven Karte.",
+    "Die Unfallatlas-App visualisiert Verkehrsunfälle des Rhein-Kreises Neuss auf einer interaktiven Karte.",
     "Die Daten werden aus einem OpenDataSoft-Datensatz geladen und in Karte, Statistik und Tabelle aufbereitet.",
     "Filter für Kommune, Schweregrad, beteiligte Verkehrsarten und Lichtverhältnisse ermöglichen eine gezielte Analyse.",
-    ""
+    "",
+    "## Für wen ist diese App?",
+    "Diese App richtet sich an Bürger:innen, die sich für Verkehrssicherheit interessieren, sowie an Kommunen und Verkehrsplaner:innen. Sie benötigen keine Datenfachkenntnisse – einfach Kommune eingeben und Unfallschwerpunkte erkunden."
   ],
   "tags-funktion": [
     "Kartenvisualisierung",
@@ -197,6 +199,15 @@
         "default": "de"
       },
       "erforderlich": "ja"
+    },
+    "weiterfuehrendeLinks": {
+      "label": "Weiterführende Links",
+      "hilfe": "Verwandte Datensätze / Hintergrundquellen (HTML/Markdown). Leer = ausgeblendet.",
+      "format": {
+        "typ": "markdown"
+      },
+      "default": "<ul><li><a href=\"https://opendata.rhein-kreis-neuss.de/explore/dataset/rhein-kreis-neuss-2022-unfallatlas/information/\" target=\"_blank\">Open Data Portal Rhein-Kreis-Neuss</a></li><li><a href=\"https://unfallatlas.statistikportal.de/\" target=\"_blank\">Unfallatlas – Statistische Ämter</a></li></ul>",
+      "erforderlich": "nein"
     }
   },
   "daten": {
