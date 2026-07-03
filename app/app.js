@@ -298,42 +298,42 @@ function initMap(el, BASE_URL, configdata) {
         <div class="col-4 col-md-2">
           <div class="card border-0 text-center py-2 py-md-3 h-100" style="background:#fef2f2">
             <div class="fs-4 fw-bold" style="color:#991b1b">${getoetet}</div>
-            <div class="text-muted" style="font-size:0.72rem;">Mit Getöteten</div>
+            <div class="text-muted" style="font-size:0.72rem;">Mit Getöteten</div>${kpiContext(configdata.kpiKontext1, "1")}
           </div>
         </div>
         <div class="col-4 col-md-2">
           <div class="card border-0 text-center py-2 py-md-3 h-100" style="background:#fff7ed">
             <div class="fs-4 fw-bold" style="color:#ea580c">${schwer}</div>
-            <div class="text-muted" style="font-size:0.72rem;">Schwerverletzte</div>
+            <div class="text-muted" style="font-size:0.72rem;">Schwerverletzte</div>${kpiContext(configdata.kpiKontext2, "2")}
           </div>
         </div>
         <div class="col-4 col-md-2">
           <div class="card border-0 text-center py-2 py-md-3 h-100" style="background:#fefce8">
             <div class="fs-4 fw-bold" style="color:#ca8a04">${leicht}</div>
-            <div class="text-muted" style="font-size:0.72rem;">Leichtverletzte</div>
+            <div class="text-muted" style="font-size:0.72rem;">Leichtverletzte</div>${kpiContext(configdata.kpiKontext3, "3")}
           </div>
         </div>
         <div class="col-4 col-md-2">
           <div class="card border-0 bg-light text-center py-2 py-md-3 h-100">
             <div class="fs-4 fw-bold text-success">${radUnf}</div>
-            <div class="text-muted" style="font-size:0.72rem;">&#128690; Fahrrad</div>
+            <div class="text-muted" style="font-size:0.72rem;">&#128690; Fahrrad</div>${kpiContext(configdata.kpiKontext4, "4")}
           </div>
         </div>
         <div class="col-4 col-md-2">
           <div class="card border-0 bg-light text-center py-2 py-md-3 h-100">
             <div class="fs-4 fw-bold text-primary">${fussUnf}</div>
-            <div class="text-muted" style="font-size:0.72rem;">&#128694; Fußgänger</div>
+            <div class="text-muted" style="font-size:0.72rem;">&#128694; Fußgänger</div>${kpiContext(configdata.kpiKontext5, "5")}
           </div>
         </div>
         <div class="col-4 col-md-2">
           <div class="card border-0 bg-light text-center py-2 py-md-3 h-100">
             <div class="fs-4 fw-bold text-dark">${topStunde ? topStunde[0] + ":00" : "–"}</div>
-            <div class="text-muted" style="font-size:0.72rem;">Häuf. Stunde</div>
+            <div class="text-muted" style="font-size:0.72rem;">Häuf. Stunde</div>${kpiContext(configdata.kpiKontext6, "6")}
           </div>
         </div>
       </div>
 
-      <h6 class="fw-semibold mb-2">Alle Unfälle (${unfaelle.length})</h6>
+      <h6 class="fw-semibold mb-2">Alle Unfälle (${unfaelle.length})</h6>${kpiContext(configdata.kpiKontext7, "7")}
       <div class="table-responsive" style="max-height:420px;">
         <table class="table table-hover table-sm align-middle mb-0">
           <thead class="table-light" style="position:sticky;top:0;z-index:1;">
@@ -372,6 +372,7 @@ function initMap(el, BASE_URL, configdata) {
         </table>
       </div>
       ${renderWeitereInfos(configdata)}
+      ${renderMethodikbox(configdata)}
     `;
 
     listEl.querySelectorAll("tbody tr").forEach((row) => {
@@ -673,6 +674,48 @@ function extractDatenStand(responseData) {
   if (!modified) return null;
   var d = new Date(modified);
   return isNaN(d.getTime()) ? null : d.toLocaleDateString("de-DE");
+}
+
+/* ── Schale 4: KPI-Kontext ── */
+function kpiContext(kontext, id) {
+  var text = String(kontext || "").trim();
+  if (!text) return "";
+  var targetId = "ua-kpi-kontext-" + id;
+  return (
+    '<button class="ua-kpi-info-toggle collapsed" type="button" ' +
+    'data-bs-toggle="collapse" data-bs-target="#' + targetId + '" ' +
+    'aria-expanded="false" aria-controls="' + targetId + '" ' +
+    'aria-label="Erklärung zu diesem Wert">' +
+    '<span class="ua-kpi-info-icon" aria-hidden="true">ⓘ</span>' +
+    "</button>" +
+    '<div id="' + targetId + '" class="collapse">' +
+    '<div class="ua-kpi-kontext">' + escapeHtml(text) + "</div>" +
+    "</div>"
+  );
+}
+
+/* ── Schale 4: Methodikbox ── */
+function renderMethodikbox(cfg) {
+  var hinweis = ((cfg && cfg.datenquelleHinweis) || "").trim();
+  var stand = ((cfg && cfg.datenStand) || "").trim();
+  if (!hinweis && !stand) return "";
+  var standHtml = stand
+    ? '<p class="text-muted small mb-2">' + escapeHtml(stand) + "</p>"
+    : "";
+  return (
+    '<section class="ua-methodik mt-3">' +
+    '<button class="ua-methodik-toggle collapsed" type="button" ' +
+    'data-bs-toggle="collapse" data-bs-target="#ua-methodik-body" ' +
+    'aria-expanded="false" aria-controls="ua-methodik-body">' +
+    '<h2 class="h5 mb-0">Methodik &amp; Datenquelle</h2>' +
+    '<span class="ua-methodik-chevron" aria-hidden="true">&#9662;</span>' +
+    "</button>" +
+    '<div id="ua-methodik-body" class="collapse">' +
+    '<div class="ua-methodik-content">' +
+    standHtml +
+    hinweis +
+    "</div></div></section>"
+  );
 }
 
 /*

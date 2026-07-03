@@ -34,5 +34,14 @@
   ],
   "apiurl": "https://opendata.rhein-kreis-neuss.de/api/explore/v2.1/catalog/datasets/rhein-kreis-neuss-2022-unfallatlas/records",
   "weiterfuehrendeLinks": "<ul><li><a href=\"https://opendata.rhein-kreis-neuss.de/explore/dataset/rhein-kreis-neuss-2022-unfallatlas/information/\" target=\"_blank\">Open Data Portal Rhein-Kreis-Neuss</a></li><li><a href=\"https://unfallatlas.statistikportal.de/\" target=\"_blank\">Unfallatlas – Statistische Ämter</a></li></ul>",
-  "sprache": "de"
+  "sprache": "de",
+  "datenquelleHinweis": "<p>Die Unfalldaten stammen vom <a href=\"https://opendata.rhein-kreis-neuss.de/\" target=\"_blank\">Open Data Portal Rhein-Kreis-Neuss</a> und basieren auf dem Unfallatlas 2022 der Statistischen Ämter des Bundes und der Länder.</p><p>Unfallkategorien: Unfall mit Getöteten (mind. 1 Todesfall), Unfall mit Schwerverletzten (mind. 1 stationär Behandelter), Unfall mit Leichtverletzten (nur ambulant Behandelte). Die App lädt alle Datensätze paginiert (100 pro Seite) über die OpenDataSoft API v2.1.</p>",
+  "datenStand": "",
+  "kpiKontext1": "",
+  "kpiKontext2": "",
+  "kpiKontext3": "",
+  "kpiKontext4": "",
+  "kpiKontext5": "",
+  "kpiKontext6": "",
+  "kpiKontext7": ""
 }

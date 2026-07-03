@@ -3,7 +3,7 @@
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "unfallatlas",
   "name": "Unfallatlas",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "assets/odas-app-icon.svg",
   "kurzbeschreibung": "Interaktive Karte und Analyse von Verkehrsunfällen (Datensatz 2022).",
@@ -207,6 +207,95 @@
         "typ": "markdown"
       },
       "default": "<ul><li><a href=\"https://opendata.rhein-kreis-neuss.de/explore/dataset/rhein-kreis-neuss-2022-unfallatlas/information/\" target=\"_blank\">Open Data Portal Rhein-Kreis-Neuss</a></li><li><a href=\"https://unfallatlas.statistikportal.de/\" target=\"_blank\">Unfallatlas – Statistische Ämter</a></li></ul>",
+      "erforderlich": "nein"
+    },
+    "datenquelleHinweis": {
+      "label": "Methodik / Datenquelle-Hinweis",
+      "hilfe": "Herkunft, Erhebungsmethode und Limitierungen (HTML/Markdown). Leer = ausgeblendet.",
+      "format": {
+        "typ": "markdown"
+      },
+      "default": "<p>Die Unfalldaten stammen vom <a href=\"https://opendata.rhein-kreis-neuss.de/\" target=\"_blank\">Open Data Portal Rhein-Kreis-Neuss</a> und basieren auf dem Unfallatlas 2022 der Statistischen Ämter des Bundes und der Länder.</p><p>Unfallkategorien: Unfall mit Getöteten (mind. 1 Todesfall), Unfall mit Schwerverletzten (mind. 1 stationär Behandelter), Unfall mit Leichtverletzten (nur ambulant Behandelte). Die App lädt alle Datensätze paginiert (100 pro Seite) über die OpenDataSoft API v2.1.</p>",
+      "erforderlich": "nein"
+    },
+    "datenStand": {
+      "label": "Datenstand",
+      "hilfe": "Freitext-Hinweis zum Stand der Daten. Leer = ausgeblendet.",
+      "format": {
+        "typ": "string",
+        "laenge": 60
+      },
+      "default": "",
+      "erforderlich": "nein"
+    },
+    "kpiKontext1": {
+      "label": "KPI-Erklärung 1: Unfälle mit Getöteten",
+      "hilfe": "Erklärtext unter dem KPI-Wert. Leer = ausgeblendet.",
+      "format": {
+        "typ": "string",
+        "laenge": 250
+      },
+      "default": "",
+      "erforderlich": "nein"
+    },
+    "kpiKontext2": {
+      "label": "KPI-Erklärung 2: Unfälle mit Schwerverletzten",
+      "hilfe": "Erklärtext unter dem KPI-Wert. Leer = ausgeblendet.",
+      "format": {
+        "typ": "string",
+        "laenge": 250
+      },
+      "default": "",
+      "erforderlich": "nein"
+    },
+    "kpiKontext3": {
+      "label": "KPI-Erklärung 3: Unfälle mit Leichtverletzten",
+      "hilfe": "Erklärtext unter dem KPI-Wert. Leer = ausgeblendet.",
+      "format": {
+        "typ": "string",
+        "laenge": 250
+      },
+      "default": "",
+      "erforderlich": "nein"
+    },
+    "kpiKontext4": {
+      "label": "KPI-Erklärung 4: Fahrrad-Unfälle",
+      "hilfe": "Erklärtext unter dem KPI-Wert. Leer = ausgeblendet.",
+      "format": {
+        "typ": "string",
+        "laenge": 250
+      },
+      "default": "",
+      "erforderlich": "nein"
+    },
+    "kpiKontext5": {
+      "label": "KPI-Erklärung 5: Fußgänger-Unfälle",
+      "hilfe": "Erklärtext unter dem KPI-Wert. Leer = ausgeblendet.",
+      "format": {
+        "typ": "string",
+        "laenge": 250
+      },
+      "default": "",
+      "erforderlich": "nein"
+    },
+    "kpiKontext6": {
+      "label": "KPI-Erklärung 6: Häufigste Unfallstunde",
+      "hilfe": "Erklärtext unter dem KPI-Wert. Leer = ausgeblendet.",
+      "format": {
+        "typ": "string",
+        "laenge": 250
+      },
+      "default": "",
+      "erforderlich": "nein"
+    },
+    "kpiKontext7": {
+      "label": "KPI-Erklärung 7: Alle Unfälle (gefiltert)",
+      "hilfe": "Erklärtext unter dem KPI-Wert. Leer = ausgeblendet.",
+      "format": {
+        "typ": "string",
+        "laenge": 250
+      },
+      "default": "",
       "erforderlich": "nein"
     }
   },
