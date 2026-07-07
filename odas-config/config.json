@@ -6,12 +6,20 @@
   "brandingCSS": ".title {color: #ffffff} body { background-color: #f8f8f8; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; margin: 0; padding: 0; } header, .header, .navbar, footer, .footer { background-color: #378681; color: #ffffff; padding: 1rem; } a { color: #378681; text-decoration: none; } a:hover, a:focus { color: #2e6f72; text-decoration: underline; } button, .btn { background-color: #378681; border: none; color: #fff; padding: 0.5rem 1rem; cursor: pointer; font-size: 1rem; border-radius: 4px; } button:hover, .btn:hover { background-color: #2e6f72; } h1, h2, h3, h4, h5, h6 { color: #378681; margin-top: 0; } .container { max-width: 1200px; margin: 0 auto; padding: 1rem; }",
   "brandingCSSFile": "./assets/branding.css",
   "beschreibung": [
-    "Die Unfallatlas-App visualisiert Verkehrsunfälle des Rhein-Kreises Neuss auf einer interaktiven Karte.",
-    "Die Daten werden aus einem OpenDataSoft-Datensatz geladen und in Karte, Statistik und Tabelle aufbereitet.",
-    "Filter für Kommune, Schweregrad, beteiligte Verkehrsarten und Lichtverhältnisse ermöglichen eine gezielte Analyse.",
-    "",
-    "## Für wen ist diese App?",
-    "Diese App richtet sich an Bürger:innen, die sich für Verkehrssicherheit interessieren, sowie an Kommunen und Verkehrsplaner:innen. Sie benötigen keine Datenfachkenntnisse – einfach Kommune eingeben und Unfallschwerpunkte erkunden."
+    "<p>Die Unfallatlas-App macht Verkehrsunfälle auf einer interaktiven Karte sichtbar und ergänzt sie um Kennzahlen und eine durchsuchbare Tabelle.</p>",
+    "<p>Bürger:innen und Fachstellen können Unfallschwere, beteiligte Verkehrsarten, Kommunen und weitere Merkmale filtern und so räumliche Muster schneller erkennen.</p>",
+    "<h3>Inhalte</h3>",
+    "<p>Die App zeigt Unfallpunkte mit Detailinformationen, aggregierte Kennzahlen, Tabellenansichten und Filter für die wichtigsten Merkmale des Datensatzes.</p>",
+    "<p>Die Auswertung hilft, Verkehrssituationen einzuordnen; sie ersetzt keine amtliche Unfallanalyse oder Sicherheitsbewertung vor Ort.</p>",
+    "<h3>Nutzung</h3>",
+    "<p>Wählen Sie Filter, zoomen Sie in der Karte auf einen Bereich und öffnen Sie einzelne Unfallpunkte für Details. Tabellen- und Kennzahlenansichten aktualisieren sich passend zur Auswahl.</p>",
+    "<h3>Für wen ist diese App?</h3>",
+    "<p>Die App richtet sich an Bürger:innen, Verkehrsplanung, Verwaltung, Medien und Initiativen, die Unfallhäufungen und Verkehrssicherheit besser verstehen möchten. Besondere Datenkenntnisse sind für die Nutzung nicht erforderlich.</p>",
+    "<h3>Datenquelle</h3>",
+    "<p>Die Daten werden aus dem Open-Data-Angebot des Rhein-Kreises Neuss geladen und in der App kartografisch sowie tabellarisch aufbereitet.</p>",
+    "<ul><li><strong>Open Data Portal:</strong> <a href=\"https://opendata.rhein-kreis-neuss.de/\" target=\"_blank\" rel=\"noopener\">Open Data Rhein-Kreis Neuss</a></li><li><strong>Datensatz:</strong> <a href=\"https://opendata.rhein-kreis-neuss.de/explore/dataset/rhein-kreis-neuss-2022-unfallatlas/information/\" target=\"_blank\" rel=\"noopener\">Unfallatlas 2022</a></li><li><strong>Ressource/API-Endpunkt:</strong> <a href=\"https://opendata.rhein-kreis-neuss.de/api/explore/v2.1/catalog/datasets/rhein-kreis-neuss-2022-unfallatlas/records\" target=\"_blank\" rel=\"noopener\">OpenDataSoft Records API</a></li></ul>",
+    "<h3>Open Data App Store</h3>",
+    "<p>Diese App ist für den Open Data App Store vorbereitet und kann von Kommunen mit eigenen Unfall- oder Verkehrsdaten konfiguriert werden.</p>"
   ],
   "kontakt": [
     "Tel.: <a href='tel:+49711310093100'>0711-31009-3100</a><br>",
@@ -36,12 +44,12 @@
   "weiterfuehrendeLinks": "<ul><li><a href=\"https://opendata.rhein-kreis-neuss.de/explore/dataset/rhein-kreis-neuss-2022-unfallatlas/information/\" target=\"_blank\">Open Data Portal Rhein-Kreis-Neuss</a></li><li><a href=\"https://unfallatlas.statistikportal.de/\" target=\"_blank\">Unfallatlas – Statistische Ämter</a></li></ul>",
   "sprache": "de",
   "datenquelleHinweis": "<p>Die Unfalldaten stammen vom <a href=\"https://opendata.rhein-kreis-neuss.de/\" target=\"_blank\">Open Data Portal Rhein-Kreis-Neuss</a> und basieren auf dem Unfallatlas 2022 der Statistischen Ämter des Bundes und der Länder.</p><p>Unfallkategorien: Unfall mit Getöteten (mind. 1 Todesfall), Unfall mit Schwerverletzten (mind. 1 stationär Behandelter), Unfall mit Leichtverletzten (nur ambulant Behandelte). Die App lädt alle Datensätze paginiert (100 pro Seite) über die OpenDataSoft API v2.1.</p>",
-  "datenStand": "",
-  "kpiKontext1": "",
-  "kpiKontext2": "",
-  "kpiKontext3": "",
-  "kpiKontext4": "",
-  "kpiKontext5": "",
-  "kpiKontext6": "",
-  "kpiKontext7": ""
+  "datenStand": "Stand: Live-Abruf aus der konfigurierten Unfallatlas-Quelle",
+  "kpiKontext1": "Anzahl der Unfälle mit mindestens einem getöteten Verkehrsteilnehmer. Jeder dieser Unfälle wiegt besonders schwer.",
+  "kpiKontext2": "Anzahl der Unfälle mit mindestens einer schwer verletzten Person. Schwerverletzte benötigen oft monatelange Behandlung.",
+  "kpiKontext3": "Anzahl der Unfälle mit mindestens einer leicht verletzten Person. Auch leichte Verletzungen bedeuten Schmerz und Ausfallzeiten.",
+  "kpiKontext4": "Anzahl der Unfälle mit Radfahrer-Beteiligung — unabhängig von Verletzung oder Schuld. Zeigt das Risiko für den Radverkehr.",
+  "kpiKontext5": "Anzahl der Unfälle mit Fußgänger-Beteiligung. Ein Wert, der auf die Sicherheit von Schulwegen und Kreuzungen hinweist.",
+  "kpiKontext6": "Die Tagesstunde mit den meisten Unfällen. Gibt Hinweise auf typische Stoßzeiten oder risikoreiche Phasen im Tagesverlauf.",
+  "kpiKontext7": "Gesamtzahl aller polizeilich erfassten Unfälle im Datensatz. Grundlage für regionale Verkehrssicherheitsplanung."
 }

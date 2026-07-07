@@ -9,12 +9,20 @@
   "kurzbeschreibung": "Interaktive Karte und Analyse von Verkehrsunfällen (Datensatz 2022).",
   "beschreibung": [
     "_multiline_",
-    "Die Unfallatlas-App visualisiert Verkehrsunfälle des Rhein-Kreises Neuss auf einer interaktiven Karte.",
-    "Die Daten werden aus einem OpenDataSoft-Datensatz geladen und in Karte, Statistik und Tabelle aufbereitet.",
-    "Filter für Kommune, Schweregrad, beteiligte Verkehrsarten und Lichtverhältnisse ermöglichen eine gezielte Analyse.",
-    "",
-    "## Für wen ist diese App?",
-    "Diese App richtet sich an Bürger:innen, die sich für Verkehrssicherheit interessieren, sowie an Kommunen und Verkehrsplaner:innen. Sie benötigen keine Datenfachkenntnisse – einfach Kommune eingeben und Unfallschwerpunkte erkunden."
+    "<p>Die Unfallatlas-App macht Verkehrsunfälle auf einer interaktiven Karte sichtbar und ergänzt sie um Kennzahlen und eine durchsuchbare Tabelle.</p>",
+    "<p>Bürger:innen und Fachstellen können Unfallschwere, beteiligte Verkehrsarten, Kommunen und weitere Merkmale filtern und so räumliche Muster schneller erkennen.</p>",
+    "<h3>Inhalte</h3>",
+    "<p>Die App zeigt Unfallpunkte mit Detailinformationen, aggregierte Kennzahlen, Tabellenansichten und Filter für die wichtigsten Merkmale des Datensatzes.</p>",
+    "<p>Die Auswertung hilft, Verkehrssituationen einzuordnen; sie ersetzt keine amtliche Unfallanalyse oder Sicherheitsbewertung vor Ort.</p>",
+    "<h3>Nutzung</h3>",
+    "<p>Wählen Sie Filter, zoomen Sie in der Karte auf einen Bereich und öffnen Sie einzelne Unfallpunkte für Details. Tabellen- und Kennzahlenansichten aktualisieren sich passend zur Auswahl.</p>",
+    "<h3>Für wen ist diese App?</h3>",
+    "<p>Die App richtet sich an Bürger:innen, Verkehrsplanung, Verwaltung, Medien und Initiativen, die Unfallhäufungen und Verkehrssicherheit besser verstehen möchten. Besondere Datenkenntnisse sind für die Nutzung nicht erforderlich.</p>",
+    "<h3>Datenquelle</h3>",
+    "<p>Die Daten werden aus dem Open-Data-Angebot des Rhein-Kreises Neuss geladen und in der App kartografisch sowie tabellarisch aufbereitet.</p>",
+    "<ul><li><strong>Open Data Portal:</strong> <a href=\"https://opendata.rhein-kreis-neuss.de/\" target=\"_blank\" rel=\"noopener\">Open Data Rhein-Kreis Neuss</a></li><li><strong>Datensatz:</strong> <a href=\"https://opendata.rhein-kreis-neuss.de/explore/dataset/rhein-kreis-neuss-2022-unfallatlas/information/\" target=\"_blank\" rel=\"noopener\">Unfallatlas 2022</a></li><li><strong>Ressource/API-Endpunkt:</strong> <a href=\"https://opendata.rhein-kreis-neuss.de/api/explore/v2.1/catalog/datasets/rhein-kreis-neuss-2022-unfallatlas/records\" target=\"_blank\" rel=\"noopener\">OpenDataSoft Records API</a></li></ul>",
+    "<h3>Open Data App Store</h3>",
+    "<p>Diese App ist für den Open Data App Store vorbereitet und kann von Kommunen mit eigenen Unfall- oder Verkehrsdaten konfiguriert werden.</p>"
   ],
   "tags-funktion": [
     "Kartenvisualisierung",
@@ -99,18 +107,20 @@
       },
       "default": [
         "_multiline_",
-        "Die Unfallatlas-App zeigt Unfälle als interaktive Karte mit ergänzender Tabelle und Kennzahlen.",
-        "Die Daten werden über die konfigurierte API geladen und beim Filtern dynamisch ausgewertet.",
-        "## Funktionen",
-        "- Karte mit farblicher Markierung nach Unfallschwere",
-        "- Filter nach Kommune, Schwere, Beteiligten und Lichtverhältnissen",
-        "- Sortierbare Tabelle mit Detailinformationen",
-        "## Datenquelle",
-        "Die Datenquelle ist in unserem Open Data Portal unter <a href=\"{{appinstanz.apiurl}}\">{{appinstanz.apiurl}}</a> erreichbar.",
-        "## Über diese App",
-        "Die App wurde entwickelt von <a href=\"{{app.developer.url}}\">{{app.developer.name}}</a>. App-Version: {{app.version}}.",
-        "## Open Data App Store",
-        "Der Open Data App Store wird betrieben von <a href=\"{{odas.betreiber.url}}\">{{odas.betreiber.name}}</a>."
+        "<p>Die Unfallatlas-App macht Verkehrsunfälle auf einer interaktiven Karte sichtbar und ergänzt sie um Kennzahlen und eine durchsuchbare Tabelle.</p>",
+        "<p>Bürger:innen und Fachstellen können Unfallschwere, beteiligte Verkehrsarten, Kommunen und weitere Merkmale filtern und so räumliche Muster schneller erkennen.</p>",
+        "<h3>Inhalte</h3>",
+        "<p>Die App zeigt Unfallpunkte mit Detailinformationen, aggregierte Kennzahlen, Tabellenansichten und Filter für die wichtigsten Merkmale des Datensatzes.</p>",
+        "<p>Die Auswertung hilft, Verkehrssituationen einzuordnen; sie ersetzt keine amtliche Unfallanalyse oder Sicherheitsbewertung vor Ort.</p>",
+        "<h3>Nutzung</h3>",
+        "<p>Wählen Sie Filter, zoomen Sie in der Karte auf einen Bereich und öffnen Sie einzelne Unfallpunkte für Details. Tabellen- und Kennzahlenansichten aktualisieren sich passend zur Auswahl.</p>",
+        "<h3>Für wen ist diese App?</h3>",
+        "<p>Die App richtet sich an Bürger:innen, Verkehrsplanung, Verwaltung, Medien und Initiativen, die Unfallhäufungen und Verkehrssicherheit besser verstehen möchten. Besondere Datenkenntnisse sind für die Nutzung nicht erforderlich.</p>",
+        "<h3>Datenquelle</h3>",
+        "<p>Die Daten werden aus dem Open-Data-Angebot des Rhein-Kreises Neuss geladen und in der App kartografisch sowie tabellarisch aufbereitet.</p>",
+        "<ul><li><strong>Open Data Portal:</strong> <a href=\"https://opendata.rhein-kreis-neuss.de/\" target=\"_blank\" rel=\"noopener\">Open Data Rhein-Kreis Neuss</a></li><li><strong>Datensatz:</strong> <a href=\"https://opendata.rhein-kreis-neuss.de/explore/dataset/rhein-kreis-neuss-2022-unfallatlas/information/\" target=\"_blank\" rel=\"noopener\">Unfallatlas 2022</a></li><li><strong>Ressource/API-Endpunkt:</strong> <a href=\"https://opendata.rhein-kreis-neuss.de/api/explore/v2.1/catalog/datasets/rhein-kreis-neuss-2022-unfallatlas/records\" target=\"_blank\" rel=\"noopener\">OpenDataSoft Records API</a></li></ul>",
+        "<h3>Open Data App Store</h3>",
+        "<p>Diese App ist für den Open Data App Store vorbereitet und kann von Kommunen mit eigenen Unfall- oder Verkehrsdaten konfiguriert werden.</p>"
       ],
       "erforderlich": "ja"
     },
@@ -225,7 +235,7 @@
         "typ": "string",
         "laenge": 60
       },
-      "default": "",
+      "default": "Stand: Live-Abruf aus der konfigurierten Unfallatlas-Quelle",
       "erforderlich": "nein"
     },
     "kpiKontext1": {
@@ -235,7 +245,7 @@
         "typ": "string",
         "laenge": 250
       },
-      "default": "",
+      "default": "Anzahl der Unfälle mit mindestens einem getöteten Verkehrsteilnehmer. Jeder dieser Unfälle wiegt besonders schwer.",
       "erforderlich": "nein"
     },
     "kpiKontext2": {
@@ -245,7 +255,7 @@
         "typ": "string",
         "laenge": 250
       },
-      "default": "",
+      "default": "Anzahl der Unfälle mit mindestens einer schwer verletzten Person. Schwerverletzte benötigen oft monatelange Behandlung.",
       "erforderlich": "nein"
     },
     "kpiKontext3": {
@@ -255,7 +265,7 @@
         "typ": "string",
         "laenge": 250
       },
-      "default": "",
+      "default": "Anzahl der Unfälle mit mindestens einer leicht verletzten Person. Auch leichte Verletzungen bedeuten Schmerz und Ausfallzeiten.",
       "erforderlich": "nein"
     },
     "kpiKontext4": {
@@ -265,7 +275,7 @@
         "typ": "string",
         "laenge": 250
       },
-      "default": "",
+      "default": "Anzahl der Unfälle mit Radfahrer-Beteiligung — unabhängig von Verletzung oder Schuld. Zeigt das Risiko für den Radverkehr.",
       "erforderlich": "nein"
     },
     "kpiKontext5": {
@@ -275,7 +285,7 @@
         "typ": "string",
         "laenge": 250
       },
-      "default": "",
+      "default": "Anzahl der Unfälle mit Fußgänger-Beteiligung. Ein Wert, der auf die Sicherheit von Schulwegen und Kreuzungen hinweist.",
       "erforderlich": "nein"
     },
     "kpiKontext6": {
@@ -285,7 +295,7 @@
         "typ": "string",
         "laenge": 250
       },
-      "default": "",
+      "default": "Die Tagesstunde mit den meisten Unfällen. Gibt Hinweise auf typische Stoßzeiten oder risikoreiche Phasen im Tagesverlauf.",
       "erforderlich": "nein"
     },
     "kpiKontext7": {
@@ -295,7 +305,7 @@
         "typ": "string",
         "laenge": 250
       },
-      "default": "",
+      "default": "Gesamtzahl aller polizeilich erfassten Unfälle im Datensatz. Grundlage für regionale Verkehrssicherheitsplanung.",
       "erforderlich": "nein"
     }
   },
