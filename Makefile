@@ -1,77 +1,42 @@
 #
-# ODAS Unfallatlas App
+# ODA Makefile
 # (C) Ondics, 2026
 #
+
+DC = docker compose -f docker-compose.yml
+ifeq ($(STANDALONE),true)
+DC := ${DC} -f docker-compose.standalone.yml
+endif
 
 # aktuelles Dir ist docker-compose project name
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
 
-DC_BIN = docker compose
-DC_FILES = -f docker-compose.yml #-f docker-compose-prod.yml
+.PHONY: help up down logs config ps zip
 
-DC_PROJECT = ${current_dir}
-DC = ${DC_BIN} ${DC_FILES}
-
-APP_TITLE = Unfallatlas Karte – Rhein-Kreis Neuss 2022
-APP_JS = app/app.js
-
-# für Backups...
-#DATE := $(shell date '+%Y%m%d-%H%M%S')
-DATE := $(shell date '+%Y%m%d')
-
-# help-systematik
-# build muss phony sein (forcierter build), weil es
-# als verzeichnis existiert und sonst nie gebaut werden w�rde
-.PHONY: help build stats app-info
-
-help:
-	@echo "# ODAS Unfallatlas App"
+help: ## Alle oeffentlichen Befehle und ihre Beschreibung anzeigen
+	@echo "# ODA Makefile"
 	@echo "# Ondics, 2026"
-	@echo "# App: ${APP_TITLE}"
-	@echo "# dir = ${current_dir}"
 	@echo Befehle: make ...
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 .DEFAULT_GOAL := help
 
-# allgemeine Befehle
-up: ## Alle kontainer starten
-	${DC} up -d --remove-orphans
+up: ## App starten (Standalone mit STANDALONE=true)
+	${DC} up -d --build --remove-orphans
 
-down: ##Alle Container stoppen
+down: ## App stoppen (Standalone mit STANDALONE=true)
 	${DC} down
 
-down-volumes: ## Container stopen, Volumes löschen
-	${DC} down --volumes
-
-logs: ## Show logs of all containers (stop with ctrl-c)
+logs: ## App-Logs anzeigen (Standalone mit STANDALONE=true)
 	${DC} logs -f -t --tail=100
 
-build:  ## Build all containers
-	${DC} build
-
-bash: ## Bash in frontend-container
-	${DC} exec web sh
-
-restart-web: ## Restart web-container
-	${DC} restart web
-
-ps: ## what's up?
-	${DC} ps
-
-config: ## show docker-compose config 
+config: ## Aufgeloeste Compose-Konfiguration anzeigen
 	${DC} config
 
-app-info: ## App-Infos aus app.js anzeigen
-	@echo "App-Name: ${APP_TITLE}"
-	@echo "Datensatz-URL aus ${APP_JS}:"
-	@grep -Eo 'https://opendata\.rhein-kreis-neuss\.de[^" ]+' ${APP_JS} | head -1
+ps: ## Containerstatus anzeigen (Standalone mit STANDALONE=true)
+	${DC} ps
 
 zip: ## App zur Auslieferung vorbereiten
-	zip -r ${current_dir}.zip \
+	zip -FS -r ${current_dir}.zip \
 	 	app assets app-package.json CHANGELOG.md
-
-check-app: ## App prüfen mit Skript aus ODAS-Tools
-	echo "App prüfen"
-	./../odas-tools/app-check.sh

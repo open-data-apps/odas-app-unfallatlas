@@ -1,5 +1,6 @@
 {
   "apiVersion": "1",
+  "proxyAktiv": "nein",
   "titel": "Unfallatlas – Rhein-Kreis Neuss 2022",
   "seitentitel": "Unfallatlas App",
   "icon": "logo_ondics.png",
@@ -29,21 +30,16 @@
   "impressum": [
     "Ondics GmbH<br>",
     "Wolfgang Clauss<br>Blumenstrasse 19<br>",
-    "<a href='https://www.ondics.de/' target='_blank'>https://www.ondics.de/</a>"
+    "<a href='https://www.ondics.de/' target='_blank' rel='noopener'>https://www.ondics.de/</a>"
   ],
-  "datenschutz": "umfangreicher Text...",
-  "urlODP": "https://open-data-musterstadt.ckan.de",
-  "urlDaten": "https://open-data-musterstadt.ckan.de/testdaten",
-  "fusszeile": [
-    "(C) Copyright 2026 | ",
-    "für den Inhalt: Ondics GmbH | ",
-    "App-Entwickler: Ondics GmbH | ",
-    "Provided by: Ondics GmbH"
-  ],
+  "datenschutz": "<p>Diese App verarbeitet keine personenbezogenen Eingaben. Beim Abruf der Karten- und Datenquellen können Verbindungsdaten an die jeweiligen externen Anbieter übertragen werden. Für den produktiven Betrieb sind die Datenschutzinformationen des Betreibers zu ergänzen.</p>",
+  "urlODP": "https://opendata.rhein-kreis-neuss.de/",
+  "urlDaten": "https://opendata.rhein-kreis-neuss.de/explore/dataset/rhein-kreis-neuss-2022-unfallatlas/information/",
+  "fusszeile": "(C) Copyright 2026 | Daten: Rhein-Kreis Neuss | App-Entwickler: Ondics GmbH",
   "apiurl": "https://opendata.rhein-kreis-neuss.de/api/explore/v2.1/catalog/datasets/rhein-kreis-neuss-2022-unfallatlas/records",
-  "weiterfuehrendeLinks": "<ul><li><a href=\"https://opendata.rhein-kreis-neuss.de/explore/dataset/rhein-kreis-neuss-2022-unfallatlas/information/\" target=\"_blank\">Open Data Portal Rhein-Kreis-Neuss</a></li><li><a href=\"https://unfallatlas.statistikportal.de/\" target=\"_blank\">Unfallatlas – Statistische Ämter</a></li></ul>",
+  "weiterfuehrendeLinks": "<ul><li><a href=\"https://opendata.rhein-kreis-neuss.de/explore/dataset/rhein-kreis-neuss-2022-unfallatlas/information/\" target=\"_blank\" rel=\"noopener\">Open Data Portal Rhein-Kreis Neuss</a></li><li><a href=\"https://unfallatlas.statistikportal.de/\" target=\"_blank\" rel=\"noopener\">Unfallatlas – Statistische Ämter</a></li></ul>",
   "sprache": "de",
-  "datenquelleHinweis": "<p>Die Unfalldaten stammen vom <a href=\"https://opendata.rhein-kreis-neuss.de/\" target=\"_blank\">Open Data Portal Rhein-Kreis-Neuss</a> und basieren auf dem Unfallatlas 2022 der Statistischen Ämter des Bundes und der Länder.</p><p>Unfallkategorien: Unfall mit Getöteten (mind. 1 Todesfall), Unfall mit Schwerverletzten (mind. 1 stationär Behandelter), Unfall mit Leichtverletzten (nur ambulant Behandelte). Die App lädt alle Datensätze paginiert (100 pro Seite) über die OpenDataSoft API v2.1.</p>",
+  "datenquelleHinweis": "<p>Die Unfalldaten stammen vom <a href=\"https://opendata.rhein-kreis-neuss.de/\" target=\"_blank\" rel=\"noopener\">Open Data Portal Rhein-Kreis Neuss</a> und basieren auf dem Unfallatlas 2022 der Statistischen Ämter des Bundes und der Länder.</p><p>Unfallkategorien: Unfall mit Getöteten (mind. 1 Todesfall), Unfall mit Schwerverletzten (mind. 1 stationär Behandelter), Unfall mit Leichtverletzten (nur ambulant Behandelte). Die App lädt alle Datensätze paginiert (100 pro Seite) über die OpenDataSoft API v2.1.</p>",
   "datenStand": "Stand: Live-Abruf aus der konfigurierten Unfallatlas-Quelle",
   "kpiKontext1": "Anzahl der Unfälle mit mindestens einem getöteten Verkehrsteilnehmer. Jeder dieser Unfälle wiegt besonders schwer.",
   "kpiKontext2": "Anzahl der Unfälle mit mindestens einer schwer verletzten Person. Schwerverletzte benötigen oft monatelange Behandlung.",
