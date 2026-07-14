@@ -1,5 +1,5 @@
 services:
-  app:
+  oda-app:
     build: .
     ports:
       - "8090:80"
