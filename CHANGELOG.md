@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.1 - 2026-07-16
+
+- **FIX:** Doppelte HTML-Escape-Helfer zu einer kanonischen Funktion zusammengeführt
+- **FIX:** Leaflet-Karte und Fullscreen-Handler werden beim Seitenwechsel vollständig abgebaut
+
 ## 1.3.0 - 2026-07-14
 
 - **ENH:** Datenabruf auf den eindeutigen Schalter `proxyAktiv` vereinfacht; direkte Abrufe bleiben der Standard

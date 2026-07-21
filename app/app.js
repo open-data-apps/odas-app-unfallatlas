@@ -90,10 +90,36 @@ async function fetchOdasJson(targetUrl, configdata = {}) {
   return JSON.parse(await fetchOdasResource(targetUrl, configdata));
 }
 
+let activeAppCleanup = null;
+let leafletLoadPromise = null;
+
 function app(configdata = {}, enclosingHtmlDivElement) {
+  if (activeAppCleanup) activeAppCleanup();
+
   const BASE_URL =
     configdata.apiurl ||
     "https://opendata.rhein-kreis-neuss.de/api/explore/v2.1/catalog/datasets/rhein-kreis-neuss-2022-unfallatlas/records";
+
+  let disposed = false;
+  let mapCleanup = null;
+
+  function cleanup() {
+    if (disposed) return;
+    disposed = true;
+    window.removeEventListener("hashchange", handleAppHashChange);
+    if (mapCleanup) {
+      mapCleanup();
+      mapCleanup = null;
+    }
+    if (activeAppCleanup === cleanup) activeAppCleanup = null;
+  }
+
+  function handleAppHashChange() {
+    if (window.location.hash !== "#startseite") cleanup();
+  }
+
+  activeAppCleanup = cleanup;
+  window.addEventListener("hashchange", handleAppHashChange);
 
   enclosingHtmlDivElement.innerHTML = `
     <div style="background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.1);
@@ -180,38 +206,53 @@ function app(configdata = {}, enclosingHtmlDivElement) {
     </div>
   `;
 
-  loadLeaflet().then(() =>
-    initMap(enclosingHtmlDivElement, BASE_URL, configdata),
-  );
+  loadLeaflet()
+    .then(() => {
+      if (
+        disposed ||
+        !enclosingHtmlDivElement.querySelector("#unfall-map")
+      ) {
+        return;
+      }
+      mapCleanup = initMap(enclosingHtmlDivElement, BASE_URL, configdata);
+    })
+    .catch((error) => {
+      if (!disposed) console.error(error.message);
+    });
   return null;
 }
 
 /* ── Leaflet dynamisch laden ── */
 function loadLeaflet() {
-  return new Promise((resolve) => {
-    if (!document.getElementById("leaflet-css")) {
-      const link = document.createElement("link");
-      link.id = "leaflet-css";
-      link.rel = "stylesheet";
-      link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
-      document.head.appendChild(link);
-    }
-    if (typeof L !== "undefined") {
-      resolve();
-      return;
-    }
+  if (!document.getElementById("leaflet-css")) {
+    const link = document.createElement("link");
+    link.id = "leaflet-css";
+    link.rel = "stylesheet";
+    link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+    document.head.appendChild(link);
+  }
+  if (typeof L !== "undefined") return Promise.resolve();
+  if (leafletLoadPromise) return leafletLoadPromise;
+
+  leafletLoadPromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
+    script.id = "leaflet-js";
     script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
     script.onload = () => resolve();
-    script.onerror = () =>
-      console.error("Leaflet konnte nicht geladen werden.");
+    script.onerror = () => reject(new Error("Leaflet konnte nicht geladen werden."));
     document.head.appendChild(script);
   });
+  return leafletLoadPromise;
 }
 
 /* ── Karte und Logik initialisieren ── */
 function initMap(el, BASE_URL, configdata) {
-  const map = L.map("unfall-map").setView([51.198, 6.687], 11);
+  const mapDiv = el.querySelector("#unfall-map");
+  const mapContainer = el.querySelector("#unfall-map-container");
+  const fsBtn = el.querySelector("#map-fullscreen-btn");
+  let destroyed = false;
+
+  const map = L.map(mapDiv).setView([51.198, 6.687], 11);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution:
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> | Daten: Statistische Ämter / Open Data Rhein-Kreis-Neuss (CC BY 4.0)',
@@ -248,17 +289,6 @@ function initMap(el, BASE_URL, configdata) {
     if (kat.includes("Getötet")) return "#991b1b";
     if (kat.includes("Schwerverlet")) return "#ea580c";
     return "#ca8a04";
-  }
-
-  /* ── HTML-Escaping gegen XSS ── */
-  function esc(str) {
-    if (str === null || str === undefined) return "";
-    return String(str)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#39;");
   }
 
   /* ── Icon ── */
@@ -314,6 +344,7 @@ function initMap(el, BASE_URL, configdata) {
 
   /* ── Marker rendern ── */
   function renderMarkers(unfaelle) {
+    if (destroyed) return;
     markerGroup.clearLayers();
     markers = new Map();
     unfaelle.forEach((u, i) => {
@@ -322,13 +353,13 @@ function initMap(el, BASE_URL, configdata) {
       const marker = L.marker([coord.lat, coord.lon], { icon: makeIcon(u) });
       const color = kategorieColor(u.ukategorie);
       marker.bindPopup(
-        `<div class="fw-bold mb-1" style="color:${color}">${esc(u.ukategorie) || "–"}</div>
-         <div class="text-muted small mb-2">${esc(u.kommune)} &bull; ${esc(u.uwochentag)}, ${u.ustunde ? esc(u.ustunde) + ":00 Uhr" : ""}</div>
+        `<div class="fw-bold mb-1" style="color:${color}">${escapeHtml(u.ukategorie) || "–"}</div>
+         <div class="text-muted small mb-2">${escapeHtml(u.kommune)} &bull; ${escapeHtml(u.uwochentag)}, ${u.ustunde ? escapeHtml(u.ustunde) + ":00 Uhr" : ""}</div>
          <table class="table table-sm table-borderless mb-1">
-           <tr><td class="text-muted">Unfallart</td><td>${esc(u.uart) || "–"}</td></tr>
-           <tr><td class="text-muted">Unfalltyp</td><td>${esc(u.utyp1) || "–"}</td></tr>
-           <tr><td class="text-muted">Licht</td><td>${esc(u.ulichtverh) || "–"}</td></tr>
-           <tr><td class="text-muted">Monat</td><td>${u.umonat ? MONATE[parseInt(u.umonat)] || "Monat " + esc(u.umonat) : "–"}</td></tr>
+           <tr><td class="text-muted">Unfallart</td><td>${escapeHtml(u.uart) || "–"}</td></tr>
+           <tr><td class="text-muted">Unfalltyp</td><td>${escapeHtml(u.utyp1) || "–"}</td></tr>
+           <tr><td class="text-muted">Licht</td><td>${escapeHtml(u.ulichtverh) || "–"}</td></tr>
+           <tr><td class="text-muted">Monat</td><td>${u.umonat ? MONATE[parseInt(u.umonat)] || "Monat " + escapeHtml(u.umonat) : "–"}</td></tr>
          </table>
          <div class="mt-1">${getBeteiligte(u)}</div>`,
         { maxWidth: 300 },
@@ -347,6 +378,7 @@ function initMap(el, BASE_URL, configdata) {
 
   /* ── Statistik & Tabelle rendern ── */
   function renderListe(unfaelle) {
+    if (destroyed) return;
     currentGefiltert = unfaelle;
     const sorted = sortUnfaelle(unfaelle);
     const listEl = el.querySelector("#unfall-list");
@@ -407,7 +439,7 @@ function initMap(el, BASE_URL, configdata) {
         </div>
         <div class="col-4 col-md-2">
           <div class="card border-0 bg-light text-center py-2 py-md-3 h-100">
-            <div class="fs-4 fw-bold text-dark">${topStunde ? topStunde[0] + ":00" : "–"}</div>
+            <div class="fs-4 fw-bold text-dark">${topStunde ? escapeHtml(topStunde[0]) + ":00" : "–"}</div>
             <div class="text-muted" style="font-size:0.72rem;">Häuf. Stunde</div>${kpiContext(configdata.kpiKontext6, "6")}
           </div>
         </div>
@@ -435,14 +467,14 @@ function initMap(el, BASE_URL, configdata) {
                   const coord = u.geo_point_2d;
                   const color = kategorieColor(u.ukategorie);
                   return `<tr style="cursor:${coord?.lat ? "pointer" : "default"}"
-                          data-lat="${coord?.lat || ""}"
-                          data-lon="${coord?.lon || ""}"
+                          data-lat="${escapeHtml(coord?.lat || "")}"
+                          data-lon="${escapeHtml(coord?.lon || "")}"
                           data-idx="${origIdx}">
-                <td class="fw-semibold" style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(u.kommune) || "–"}</td>
-                <td><span class="badge" style="background:${color}">${esc(u.ukategorie) || "–"}</span></td>
-                <td class="text-muted small" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(u.uart) || "–"}</td>
-                <td class="text-muted small">${esc(u.ulichtverh) || "–"}</td>
-                <td class="text-muted small">${u.uwochentag ? esc(u.uwochentag.substring(0, 2)) + "." : "–"} ${u.ustunde ? esc(u.ustunde) + ":00" : ""}</td>
+                <td class="fw-semibold" style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(u.kommune) || "–"}</td>
+                <td><span class="badge" style="background:${color}">${escapeHtml(u.ukategorie) || "–"}</span></td>
+                <td class="text-muted small" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(u.uart) || "–"}</td>
+                <td class="text-muted small">${escapeHtml(u.ulichtverh) || "–"}</td>
+                <td class="text-muted small">${u.uwochentag ? escapeHtml(u.uwochentag.substring(0, 2)) + "." : "–"} ${u.ustunde ? escapeHtml(u.ustunde) + ":00" : ""}</td>
                 <td>${getBeteiligte(u)}</td>
               </tr>`;
                 })
@@ -457,15 +489,14 @@ function initMap(el, BASE_URL, configdata) {
 
     listEl.querySelectorAll("tbody tr").forEach((row) => {
       row.addEventListener("click", () => {
+        if (destroyed) return;
         const lat = parseFloat(row.dataset.lat);
         const lon = parseFloat(row.dataset.lon);
         const idx = parseInt(row.dataset.idx);
         if (!lat || !lon) return;
         map.setView([lat, lon], 17);
         markers.get(idx)?.marker.openPopup();
-        document
-          .getElementById("unfall-map")
-          .scrollIntoView({ behavior: "smooth", block: "center" });
+        mapDiv.scrollIntoView({ behavior: "smooth", block: "center" });
       });
     });
 
@@ -484,6 +515,7 @@ function initMap(el, BASE_URL, configdata) {
 
   /* ── Treffer-Badge ── */
   function updateBadge(n) {
+    if (destroyed) return;
     const badge = el.querySelector("#treffer-badge");
     if (!badge) return;
     badge.innerHTML =
@@ -519,9 +551,10 @@ function initMap(el, BASE_URL, configdata) {
     if (datasetId) {
       var catUrl = BASE_URL.substring(0, BASE_URL.indexOf("/catalog/datasets/")) + "/catalog/datasets/" + datasetId;
       fetchOdasJson(catUrl, configdata).then(function(meta) {
+        if (destroyed) return;
         var stand = extractDatenStand(meta);
         if (stand) {
-          var badge = document.getElementById("ua-datenstand");
+          var badge = el.querySelector("#ua-datenstand");
           if (badge) badge.textContent = "Aktualisiert: " + stand;
         }
       }).catch(function() {});
@@ -537,6 +570,7 @@ function initMap(el, BASE_URL, configdata) {
         `${BASE_URL}?${params.toString()}`,
         configdata,
       );
+      if (destroyed) return allResults;
       if (total === null) total = data.total_count || 0;
       const page = data.results || [];
       allResults = allResults.concat(page);
@@ -568,6 +602,7 @@ function initMap(el, BASE_URL, configdata) {
     beteiligtFilter,
     lichtFilter,
   ) {
+    if (destroyed) return;
     const listEl = el.querySelector("#unfall-list");
     listEl.innerHTML = "";
     markerGroup.clearLayers();
@@ -611,6 +646,7 @@ function initMap(el, BASE_URL, configdata) {
 
     fetchAllPages(where)
       .then((results) => {
+        if (destroyed) return;
         if (progressContainer) progressContainer.style.display = "none";
         dataCache.set(cacheKey, results);
         alleUnfaelle = results;
@@ -624,8 +660,9 @@ function initMap(el, BASE_URL, configdata) {
         renderListe(gefiltert);
       })
       .catch((err) => {
+        if (destroyed) return;
         if (progressContainer) progressContainer.style.display = "none";
-        listEl.innerHTML = `<div class="alert alert-danger"><strong>Fehler beim Laden:</strong> ${esc(err.message)}</div>`;
+        listEl.innerHTML = `<div class="alert alert-danger"><strong>Fehler beim Laden:</strong> ${escapeHtml(err.message)}</div>`;
         updateBadge(0);
       });
   }
@@ -698,37 +735,48 @@ function initMap(el, BASE_URL, configdata) {
   });
 
   /* ── Vollbild-Button ── */
-  const fsBtn = el.querySelector("#map-fullscreen-btn");
-  const mapContainer = el.querySelector("#unfall-map-container");
-  const mapDiv = el.querySelector("#unfall-map");
-  if (fsBtn && mapContainer) {
-    fsBtn.addEventListener("click", () => {
-      if (!document.fullscreenElement) {
-        mapContainer.requestFullscreen?.();
-      } else {
-        document.exitFullscreen?.();
-      }
-    });
-    document.addEventListener("fullscreenchange", () => {
-      if (document.fullscreenElement) {
-        mapDiv.style.height = "100%";
-        mapDiv.style.borderRadius = "0";
-        fsBtn.innerHTML = "&#x2715;";
-        fsBtn.title = "Vollbild beenden";
-      } else {
-        mapDiv.style.height = "560px";
-        mapDiv.style.borderRadius = "10px";
-        fsBtn.innerHTML = "&#x26F6;";
-        fsBtn.title = "Vollbildmodus ein/aus";
-      }
-      map.invalidateSize();
-    });
+  function handleFullscreenClick() {
+    if (destroyed) return;
+    if (mapContainer && document.fullscreenElement === mapContainer) {
+      document.exitFullscreen?.();
+    } else if (!document.fullscreenElement) {
+      mapContainer.requestFullscreen?.();
+    }
   }
+
+  function handleFullscreenChange() {
+    if (destroyed) return;
+    const isMapFullscreen = document.fullscreenElement === mapContainer;
+    mapDiv.style.height = isMapFullscreen ? "100%" : "560px";
+    mapDiv.style.borderRadius = isMapFullscreen ? "0" : "10px";
+    fsBtn.innerHTML = isMapFullscreen ? "&#x2715;" : "&#x26F6;";
+    fsBtn.title = isMapFullscreen
+      ? "Vollbild beenden"
+      : "Vollbildmodus ein/aus";
+    map.invalidateSize();
+  }
+
+  if (fsBtn && mapContainer) {
+    fsBtn.addEventListener("click", handleFullscreenClick);
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+  }
+
+  return function cleanupMap() {
+    if (destroyed) return;
+    destroyed = true;
+    if (fsBtn) fsBtn.removeEventListener("click", handleFullscreenClick);
+    document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    if (mapContainer && document.fullscreenElement === mapContainer) {
+      const exitPromise = document.exitFullscreen?.();
+      if (exitPromise?.catch) exitPromise.catch(() => {});
+    }
+    map.remove();
+  };
 }
 
 /* ── Schale 4: escapeHtml ── */
-function escapeHtml(s) {
-  return String(s == null ? "" : s)
+function escapeHtml(value = "") {
+  return String(value)
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
