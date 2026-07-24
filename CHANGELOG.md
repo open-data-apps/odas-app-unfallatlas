@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.0 - 2026-07-24
+
+- **FIX:** Laufzeit-Fehlermeldung wird vor der Anzeige HTML-maskiert (`escapeHtmlForBase`); ein Fehlertext kann kein Markup mehr in die Seite einschleusen (XSS)
+- **FIX:** Startseiten-Renderer wird nun `await`et; bei asynchronen Apps erscheint kein kurzzeitiges `[object Promise]` in `#main-content`
+
 ## 1.3.1 - 2026-07-16
 
 - **FIX:** Doppelte HTML-Escape-Helfer zu einer kanonischen Funktion zusammengeführt
