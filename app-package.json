@@ -3,7 +3,7 @@
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "unfallatlas",
   "name": "Unfallatlas",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "assets/odas-app-icon.svg",
   "kurzbeschreibung": "Interaktive Karte und Analyse von Verkehrsunfällen (Datensatz 2022).",
@@ -36,8 +36,8 @@
     "Unfall"
   ],
   "screenshots": [
-    "/assets/Desktop_Screenshot.png",
-    "/assets/Mobile_Screenshot.png"
+    "assets/Desktop_Screenshot.png",
+    "assets/Mobile_Screenshot.png"
   ],
   "branding-css": "",
   "api-version": "1",
@@ -46,16 +46,6 @@
       "label": "Seitentitel",
       "hilfe": "Der Seitentitel wird im Browser-Tab der App angezeigt",
       "default": "Unfallatlas",
-      "format": {
-        "typ": "string",
-        "laenge": 50
-      },
-      "erforderlich": "ja"
-    },
-    "lizenz": {
-      "label": "Lizenz",
-      "hilfe": "Angabe der Lizenz, die für die Nutzung der App gilt.",
-      "default": "Open Software License (OSL)",
       "format": {
         "typ": "string",
         "laenge": 50
@@ -308,11 +298,31 @@
       },
       "default": "Gesamtzahl aller polizeilich erfassten Unfälle im Datensatz. Grundlage für regionale Verkehrssicherheitsplanung.",
       "erforderlich": "nein"
+    },
+    "brandingCSS": {
+      "label": "Zusätzliches Branding-CSS",
+      "hilfe": "Optionaler CSS-Code für die konkrete App-Instanz.",
+      "default": "",
+      "format": {
+        "typ": "string",
+        "laenge": 10000
+      },
+      "erforderlich": "nein"
+    },
+    "brandingCSSFile": {
+      "label": "Branding-CSS-Datei",
+      "hilfe": "Optionale URL zu einer zusätzlichen CSS-Datei für die konkrete App-Instanz.",
+      "default": "",
+      "format": {
+        "typ": "url",
+        "laenge": 500
+      },
+      "erforderlich": "nein"
     }
   },
   "daten": {
     "beschreibung": "Die Unfallatlas-App verarbeitet konfigurierbare Open-Data-Ressourcen aus dem Open Data Portal (z.B. JSON- oder CSV-Endpunkte).",
-    "schema": "",
+    "schema": "assets/schema.json",
     "beispiel": "",
     "beispiel-url": ""
   }
