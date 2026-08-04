@@ -233,7 +233,7 @@ function loadLeaflet() {
     const link = document.createElement("link");
     link.id = "leaflet-css";
     link.rel = "stylesheet";
-    link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+    link.href = "vendor/leaflet/leaflet.css";
     document.head.appendChild(link);
   }
   if (typeof L !== "undefined") return Promise.resolve();
@@ -242,7 +242,7 @@ function loadLeaflet() {
   leafletLoadPromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
     script.id = "leaflet-js";
-    script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+    script.src = "vendor/leaflet/leaflet.js";
     script.onload = () => resolve();
     script.onerror = () => reject(new Error("Leaflet konnte nicht geladen werden."));
     document.head.appendChild(script);
