@@ -217,7 +217,12 @@ function app(configdata = {}, enclosingHtmlDivElement) {
       mapCleanup = initMap(enclosingHtmlDivElement, BASE_URL, configdata);
     })
     .catch((error) => {
-      if (!disposed) console.error(error.message);
+      if (disposed) return;
+      console.error(error.message);
+      const mapContainer = enclosingHtmlDivElement.querySelector("#unfall-map");
+      if (mapContainer) {
+        mapContainer.innerHTML = `<div class="alert alert-danger m-3" role="alert">Kartenbibliothek konnte nicht geladen werden (${escapeHtml(error.message)}). Prüfen Sie die Internetverbindung.</div>`;
+      }
     });
   return null;
 }

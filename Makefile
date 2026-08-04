@@ -12,7 +12,7 @@ endif
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
 
-.PHONY: help up down logs config ps zip
+.PHONY: help up down logs config ps zip check-app
 
 help: ## Alle oeffentlichen Befehle und ihre Beschreibung anzeigen
 	@echo "# ODA Makefile"
@@ -40,3 +40,7 @@ ps: ## Containerstatus anzeigen (Standalone mit STANDALONE=true)
 zip: ## App zur Auslieferung vorbereiten
 	zip -FS -r ${current_dir}.zip \
 	 	app assets app-package.json CHANGELOG.md
+
+check-app: ## App prüfen mit Skript aus ODAS-Tools
+	echo "App prüfen"
+	./../odas-tools/app-check.sh

@@ -198,6 +198,16 @@ make help
 
 ---
 
+## Beim Aufruf kontaktierte Drittanbieter
+
+Beim Aufruf dieser App werden folgende externe Server kontaktiert:
+
+- `cdn.jsdelivr.net` — Bootstrap (Layout- und UI-Framework)
+- `unpkg.com` — Leaflet (Kartendarstellung)
+- `tile.openstreetmap.org` — Kartenkacheln (OpenStreetMap)
+
+Diese Anbieter bleiben auch im Standalone-Betrieb extern; ein vollständig autarker Betrieb ohne Internetzugang ist derzeit nicht möglich (siehe F-07 in `Review.md`).
+
 ## Autor
 
 (C) 2026, Ondics GmbH
