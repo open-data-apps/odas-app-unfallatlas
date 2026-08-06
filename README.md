@@ -148,7 +148,7 @@ Bei der Auslieferung ueber den ODAS kann `proxyAktiv: "ja"` den ODAS-Proxy einsc
 
 ## Betrieb ueber den ODAS
 
-Die ODAS-Auslieferung bleibt unveraendert: `make zip` packt `app/`, `assets/`, `app-package.json` und `CHANGELOG.md`. Docker-, Standalone- und lokale Config-Dateien sind nicht Bestandteil dieses ZIP-Pakets.
+Die ODAS-Auslieferung bleibt unveraendert: `make zip` packt `app/`, `assets/`, `app-package.json` und `CHANGELOG.md`. Docker-, Standalone- und lokale Config-Dateien sind nicht Bestandteil dieses ZIP-Pakets. Das ZIP ist ein Bauartefakt und wird nicht mitversioniert, sondern bei Bedarf mit `make zip` erzeugt.
 
 Der ODAS erzeugt die Instanz-Konfiguration wie bisher aus `app-package.json`. `proxyAktiv` bleibt standardmaessig `nein` und kann bei CORS-sensitiven Portalquellen auf `ja` gesetzt werden. Zusaetzliche alte Config-Schluessel werden von der App ignoriert. An der ODAS-Plattform selbst ist keine Aenderung erforderlich.
 
