@@ -90,10 +90,12 @@ async function fetchOdasJson(targetUrl, configdata = {}) {
   return JSON.parse(await fetchOdasResource(targetUrl, configdata));
 }
 
+let uaInstanzZaehler = 0;
 let activeAppCleanup = null;
 let leafletLoadPromise = null;
 
 function app(configdata = {}, enclosingHtmlDivElement) {
+  const uaUid = "i" + ++uaInstanzZaehler;
   if (activeAppCleanup) activeAppCleanup();
 
   const BASE_URL =
@@ -214,7 +216,7 @@ function app(configdata = {}, enclosingHtmlDivElement) {
       ) {
         return;
       }
-      mapCleanup = initMap(enclosingHtmlDivElement, BASE_URL, configdata);
+      mapCleanup = initMap(enclosingHtmlDivElement, BASE_URL, configdata, uaUid);
     })
     .catch((error) => {
       if (disposed) return;
@@ -251,7 +253,7 @@ function loadLeaflet() {
 }
 
 /* ── Karte und Logik initialisieren ── */
-function initMap(el, BASE_URL, configdata) {
+function initMap(el, BASE_URL, configdata, uid) {
   const mapDiv = el.querySelector("#unfall-map");
   const mapContainer = el.querySelector("#unfall-map-container");
   const fsBtn = el.querySelector("#map-fullscreen-btn");
@@ -415,42 +417,42 @@ function initMap(el, BASE_URL, configdata) {
         <div class="col-4 col-md-2">
           <div class="card border-0 text-center py-2 py-md-3 h-100" style="background:#fef2f2">
             <div class="fs-4 fw-bold" style="color:#991b1b">${getoetet}</div>
-            <div class="text-muted" style="font-size:0.72rem;">Mit Getöteten</div>${kpiContext(configdata.kpiKontext1, "1")}
+            <div class="text-muted" style="font-size:0.72rem;">Mit Getöteten</div>${kpiContext(configdata.kpiKontext1, "1", uid)}
           </div>
         </div>
         <div class="col-4 col-md-2">
           <div class="card border-0 text-center py-2 py-md-3 h-100" style="background:#fff7ed">
             <div class="fs-4 fw-bold" style="color:#ea580c">${schwer}</div>
-            <div class="text-muted" style="font-size:0.72rem;">Schwerverletzte</div>${kpiContext(configdata.kpiKontext2, "2")}
+            <div class="text-muted" style="font-size:0.72rem;">Schwerverletzte</div>${kpiContext(configdata.kpiKontext2, "2", uid)}
           </div>
         </div>
         <div class="col-4 col-md-2">
           <div class="card border-0 text-center py-2 py-md-3 h-100" style="background:#fefce8">
             <div class="fs-4 fw-bold" style="color:#ca8a04">${leicht}</div>
-            <div class="text-muted" style="font-size:0.72rem;">Leichtverletzte</div>${kpiContext(configdata.kpiKontext3, "3")}
+            <div class="text-muted" style="font-size:0.72rem;">Leichtverletzte</div>${kpiContext(configdata.kpiKontext3, "3", uid)}
           </div>
         </div>
         <div class="col-4 col-md-2">
           <div class="card border-0 bg-light text-center py-2 py-md-3 h-100">
             <div class="fs-4 fw-bold text-success">${radUnf}</div>
-            <div class="text-muted" style="font-size:0.72rem;">&#128690; Fahrrad</div>${kpiContext(configdata.kpiKontext4, "4")}
+            <div class="text-muted" style="font-size:0.72rem;">&#128690; Fahrrad</div>${kpiContext(configdata.kpiKontext4, "4", uid)}
           </div>
         </div>
         <div class="col-4 col-md-2">
           <div class="card border-0 bg-light text-center py-2 py-md-3 h-100">
             <div class="fs-4 fw-bold text-primary">${fussUnf}</div>
-            <div class="text-muted" style="font-size:0.72rem;">&#128694; Fußgänger</div>${kpiContext(configdata.kpiKontext5, "5")}
+            <div class="text-muted" style="font-size:0.72rem;">&#128694; Fußgänger</div>${kpiContext(configdata.kpiKontext5, "5", uid)}
           </div>
         </div>
         <div class="col-4 col-md-2">
           <div class="card border-0 bg-light text-center py-2 py-md-3 h-100">
             <div class="fs-4 fw-bold text-dark">${topStunde ? escapeHtml(topStunde[0]) + ":00" : "–"}</div>
-            <div class="text-muted" style="font-size:0.72rem;">Häuf. Stunde</div>${kpiContext(configdata.kpiKontext6, "6")}
+            <div class="text-muted" style="font-size:0.72rem;">Häuf. Stunde</div>${kpiContext(configdata.kpiKontext6, "6", uid)}
           </div>
         </div>
       </div>
 
-      <h6 class="fw-semibold mb-2">Alle Unfälle (${unfaelle.length})</h6>${kpiContext(configdata.kpiKontext7, "7")}
+      <h6 class="fw-semibold mb-2">Alle Unfälle (${unfaelle.length})</h6>${kpiContext(configdata.kpiKontext7, "7", uid)}
       <div class="table-responsive" style="max-height:420px;">
         <table class="table table-hover table-sm align-middle mb-0">
           <thead class="table-light" style="position:sticky;top:0;z-index:1;">
@@ -488,8 +490,8 @@ function initMap(el, BASE_URL, configdata) {
           </tbody>
         </table>
       </div>
-      ${renderWeitereInfos(configdata)}
-      ${renderMethodikbox(configdata)}
+      ${renderWeitereInfos(configdata, uid)}
+      ${renderMethodikbox(configdata, uid)}
     `;
 
     listEl.querySelectorAll("tbody tr").forEach((row) => {
@@ -790,7 +792,7 @@ function escapeHtml(value = "") {
 }
 
 /* ── Schale 4: Weiterführende Links ── */
-function renderWeitereInfos(cfg) {
+function renderWeitereInfos(cfg, uid) {
   var links = ((cfg && cfg.weiterfuehrendeLinks) || "").trim();
   if (!links) return "";
   return (
@@ -811,10 +813,10 @@ function extractDatenStand(responseData) {
 }
 
 /* ── Schale 4: KPI-Kontext ── */
-function kpiContext(kontext, id) {
+function kpiContext(kontext, id, uid) {
   var text = String(kontext || "").trim();
   if (!text) return "";
-  var targetId = "ua-kpi-kontext-" + id;
+  var targetId = "ua-kpi-kontext-" + id + "-" + uid;
   return (
     '<button class="ua-kpi-info-toggle collapsed" type="button" ' +
     'data-bs-toggle="collapse" data-bs-target="#' + targetId + '" ' +
@@ -829,7 +831,7 @@ function kpiContext(kontext, id) {
 }
 
 /* ── Schale 4: Methodikbox ── */
-function renderMethodikbox(cfg) {
+function renderMethodikbox(cfg, uid) {
   var hinweis = ((cfg && cfg.datenquelleHinweis) || "").trim();
   var stand = ((cfg && cfg.datenStand) || "").trim();
   if (!hinweis && !stand) return "";
@@ -839,12 +841,12 @@ function renderMethodikbox(cfg) {
   return (
     '<section class="ua-methodik mt-3">' +
     '<button class="ua-methodik-toggle collapsed" type="button" ' +
-    'data-bs-toggle="collapse" data-bs-target="#ua-methodik-body" ' +
-    'aria-expanded="false" aria-controls="ua-methodik-body">' +
+    'data-bs-toggle="collapse" data-bs-target="#ua-methodik-body-' + uid + '" ' +
+    'aria-expanded="false" aria-controls="ua-methodik-body-' + uid + '">' +
     '<h2 class="h5 mb-0">Methodik &amp; Datenquelle</h2>' +
     '<span class="ua-methodik-chevron" aria-hidden="true">&#9662;</span>' +
     "</button>" +
-    '<div id="ua-methodik-body" class="collapse">' +
+    '<div id="ua-methodik-body-' + uid + '" class="collapse">' +
     '<div class="ua-methodik-content">' +
     standHtml +
     hinweis +

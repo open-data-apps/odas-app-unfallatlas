@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.13.0 - 2026-08-07
+- FIX: Bootstrap-Ziele instanzeindeutig machen (F-32)
+
 ## 1.12.0 - 2026-08-06
 - FIX: Datenschutzangabe beschreibt den tatsaechlichen Stand nach dem Vendoring (Welle G)
 
