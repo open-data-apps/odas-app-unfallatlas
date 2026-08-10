@@ -91,12 +91,13 @@ async function fetchOdasJson(targetUrl, configdata = {}) {
 }
 
 let uaInstanzZaehler = 0;
-let activeAppCleanup = null;
+const uaCleanups = new WeakMap();
 let leafletLoadPromise = null;
 
 function app(configdata = {}, enclosingHtmlDivElement) {
   const uaUid = "i" + ++uaInstanzZaehler;
-  if (activeAppCleanup) activeAppCleanup();
+  const previousCleanup = uaCleanups.get(enclosingHtmlDivElement);
+  if (previousCleanup) previousCleanup();
 
   const BASE_URL =
     configdata.apiurl ||
@@ -113,14 +114,16 @@ function app(configdata = {}, enclosingHtmlDivElement) {
       mapCleanup();
       mapCleanup = null;
     }
-    if (activeAppCleanup === cleanup) activeAppCleanup = null;
+    if (uaCleanups.get(enclosingHtmlDivElement) === cleanup) {
+      uaCleanups.delete(enclosingHtmlDivElement);
+    }
   }
 
   function handleAppHashChange() {
     if (window.location.hash !== "#startseite") cleanup();
   }
 
-  activeAppCleanup = cleanup;
+  uaCleanups.set(enclosingHtmlDivElement, cleanup);
   window.addEventListener("hashchange", handleAppHashChange);
 
   enclosingHtmlDivElement.innerHTML = `

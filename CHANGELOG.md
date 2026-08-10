@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.14.0 - 2026-08-10
+- FIX: Laufzeitzustand pro App-Instanz isolieren (F-34)
+
 ## 1.13.0 - 2026-08-07
 - FIX: Bootstrap-Ziele instanzeindeutig machen (F-32)
 
