@@ -38,7 +38,7 @@ ps: ## Containerstatus anzeigen (Standalone mit STANDALONE=true)
 	${DC} ps
 
 zip: ## App zur Auslieferung vorbereiten
-	zip -FS -r ${current_dir}.zip \
+	zip -r ${current_dir}.zip \
 	 	app assets app-package.json CHANGELOG.md
 
 check-app: ## App prüfen mit Skript aus ODAS-Tools

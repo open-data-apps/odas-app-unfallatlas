@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.15.0 - 2026-08-12
+- ENH: ZIP-Aufruf im Makefile von `zip -FS -r` auf `zip -r` vereinheitlicht — `-FS` (Filesync) ist bei einem stets neu gebauten Archiv wirkungslos (F-53)
+
 ## 1.14.0 - 2026-08-10
 - FIX: Laufzeitzustand pro App-Instanz isolieren (F-34)
 
