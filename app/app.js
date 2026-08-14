@@ -99,9 +99,14 @@ function app(configdata = {}, enclosingHtmlDivElement) {
   const previousCleanup = uaCleanups.get(enclosingHtmlDivElement);
   if (previousCleanup) previousCleanup();
 
-  const BASE_URL =
-    configdata.apiurl ||
-    "https://opendata.rhein-kreis-neuss.de/api/explore/v2.1/catalog/datasets/rhein-kreis-neuss-2022-unfallatlas/records";
+  const quelle = String(configdata.apiurl || "").trim();
+  if (!quelle || /^\{\{.*\}\}$/.test(quelle) || /^<.*>$/.test(quelle)) {
+    enclosingHtmlDivElement.innerHTML =
+      '<div class="alert alert-info" role="alert">Es ist keine Datenquelle konfiguriert.</div>';
+    return null;
+  }
+
+  const BASE_URL = configdata.apiurl;
 
   let disposed = false;
   let mapCleanup = null;
