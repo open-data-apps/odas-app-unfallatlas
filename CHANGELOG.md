@@ -1,6 +1,9 @@
 # Changelog
 
 
+## 1.20.0 - 2026-08-20
+- FIX: `fetchUnfaelle`/`fetchAllPages` erhalten einen Lade-Token gegen Überholung durch eine neuere Anfrage auf derselben Seite, zusätzlich zum bestehenden `destroyed`-Schutz gegen Seitenverlassen (F-70)
+
 ## 1.19.0 - 2026-08-17
 - `apiurl.hilfe` verwendete das Wort „Datensatz" für das Feld, das explizit NICHT die Datensatzseite sein soll (plus Tippfehler „Ressoucen"); jetzt mit expliziter Abgrenzung zu `urlDaten` formuliert (F-68)
 

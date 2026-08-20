@@ -284,6 +284,10 @@ function initMap(el, BASE_URL, configdata, uid) {
   const mapContainer = el.querySelector("#unfall-map-container");
   const fsBtn = el.querySelector("#map-fullscreen-btn");
   let destroyed = false;
+  // Monotoner Lade-Token: schuetzt gegen Ueberholung einer aelteren Anfrage
+  // durch eine neuere (z.B. schneller Doppel-Filterwechsel) — zusaetzlich
+  // zum destroyed-Flag, das nur das Seitenverlassen abdeckt (F-70).
+  let requestToken = 0;
 
   const map = L.map(mapDiv).setView([51.198, 6.687], 11);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -568,7 +572,7 @@ function initMap(el, BASE_URL, configdata, uid) {
   }
 
   /* ── Alle Seiten laden (Pagination) ── */
-  async function fetchAllPages(where) {
+  async function fetchAllPages(where, token) {
     const PAGE_SIZE = 100;
     let offset = 0;
     let total = null;
@@ -584,7 +588,7 @@ function initMap(el, BASE_URL, configdata, uid) {
     if (datasetId) {
       var catUrl = BASE_URL.substring(0, BASE_URL.indexOf("/catalog/datasets/")) + "/catalog/datasets/" + datasetId;
       fetchOdasJson(catUrl, configdata).then(function(meta) {
-        if (destroyed) return;
+        if (destroyed || token !== requestToken) return;
         var stand = extractDatenStand(meta);
         if (stand) {
           var badge = el.querySelector("#ua-datenstand");
@@ -603,7 +607,7 @@ function initMap(el, BASE_URL, configdata, uid) {
         `${BASE_URL}?${params.toString()}`,
         configdata,
       );
-      if (destroyed) return allResults;
+      if (destroyed || token !== requestToken) return allResults;
       if (total === null) total = data.total_count || 0;
       const page = data.results || [];
       allResults = allResults.concat(page);
@@ -636,6 +640,8 @@ function initMap(el, BASE_URL, configdata, uid) {
     lichtFilter,
   ) {
     if (destroyed) return;
+    // Neuer Lade-Zyklus: entwertet jede noch laufende aeltere Anfrage.
+    const myToken = ++requestToken;
     const listEl = el.querySelector("#unfall-list");
     listEl.innerHTML = "";
     markerGroup.clearLayers();
@@ -677,9 +683,9 @@ function initMap(el, BASE_URL, configdata, uid) {
       return;
     }
 
-    fetchAllPages(where)
+    fetchAllPages(where, myToken)
       .then((results) => {
-        if (destroyed) return;
+        if (destroyed || myToken !== requestToken) return;
         if (progressContainer) progressContainer.style.display = "none";
         dataCache.set(cacheKey, results);
         alleUnfaelle = results;
@@ -693,7 +699,7 @@ function initMap(el, BASE_URL, configdata, uid) {
         renderListe(gefiltert);
       })
       .catch((err) => {
-        if (destroyed) return;
+        if (destroyed || myToken !== requestToken) return;
         if (progressContainer) progressContainer.style.display = "none";
         listEl.innerHTML = `<div class="alert alert-danger"><strong>Fehler beim Laden:</strong> ${escapeHtml(err.message)}</div>`;
         updateBadge(0);
