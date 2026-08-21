@@ -1,6 +1,10 @@
 # Changelog
 
 
+## 1.21.0 - 2026-08-20
+
+- Markdown-Metadaten: Paketbeschreibungen auf echtes Markdown umgestellt, exakte Identität Top-Level/Instanz hergestellt, lokale HTML-Fixture semantisch gespiegelt.
+
 ## 1.20.0 - 2026-08-20
 - FIX: `fetchUnfaelle`/`fetchAllPages` erhalten einen Lade-Token gegen Überholung durch eine neuere Anfrage auf derselben Seite, zusätzlich zum bestehenden `destroyed`-Schutz gegen Seitenverlassen (F-70)
 
