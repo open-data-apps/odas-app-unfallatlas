@@ -43,7 +43,7 @@ Standardmaessig nutzt die App folgenden Datensatz:
 - Dataset: rhein-kreis-neuss-2022-unfallatlas
 - API-Endpunkt: https://opendata.rhein-kreis-neuss.de/api/explore/v2.1/catalog/datasets/rhein-kreis-neuss-2022-unfallatlas/records
 
-Der Endpunkt kann ueber den Konfigurationswert apiurl ueberschrieben werden.
+Der Endpunkt kann ueber den Konfigurationswert apiurls.unfaelle ueberschrieben werden.
 
 ---
 
@@ -140,7 +140,7 @@ ODAS-Shortcodes wie `{{odp.anbieter.name}}`, `{{odp.logo}}` oder `{{jahr}}` werd
 
 ### CORS und ODAS-Proxy
 
-Die Entwicklungs- und Standalone-Konfiguration setzen `proxyAktiv: "nein"`. Der Browser ruft die konfigurierte `apiurl` deshalb direkt auf. Bei fehlenden CORS-Headern zeigt die App einen Hinweis auf Daten-URL und CORS-Freigabe; ein automatischer Proxy-Fallback ist nicht vorhanden.
+Die Entwicklungs- und Standalone-Konfiguration setzen `proxyAktiv: "nein"`. Der Browser ruft die konfigurierte `apiurls.unfaelle` deshalb direkt auf. Bei fehlenden CORS-Headern zeigt die App einen Hinweis auf Daten-URL und CORS-Freigabe; ein automatischer Proxy-Fallback ist nicht vorhanden.
 
 Bei der Auslieferung ueber den ODAS kann `proxyAktiv: "ja"` den ODAS-Proxy einschalten. Dabei sendet die App einen `POST` an `<App-Basispfad>/odp-data` und uebergibt nur Pfad und Query der Ziel-URL als URL-kodierten `path`-Parameter. Echte Proxy-Aufrufe koennen nur im ODAS-Live-System vollstaendig getestet werden.
 
@@ -173,7 +173,7 @@ Wichtige Werte in `odas-config/config.json`:
 
 | Parameter | Bedeutung |
 | --------- | --------- |
-| `apiurl` | OpenDataSoft-Endpunkt, aus dem die Unfalldaten geladen werden |
+| `apiurls` | URLs zu Datenressourcen. Eintrag `unfaelle`: OpenDataSoft-Endpunkt, aus dem die Unfalldaten geladen werden |
 | `urlDaten` | Datensatzseite im Open Data Portal |
 | `proxyAktiv` | Muss fuer Entwicklung und Standalone `nein` sein |
 | `titel`, `seitentitel`, `icon` | Darstellung der App |

@@ -5,7 +5,9 @@
  *
  * ConfigData:
  * {
- *   "apiurl": "https://opendata.rhein-kreis-neuss.de/api/explore/v2.1/catalog/datasets/rhein-kreis-neuss-2022-unfallatlas/records"
+ *   "apiurls": [
+ *     { "name": "unfaelle", "label": "URL zu den Daten", "url": "https://opendata.rhein-kreis-neuss.de/api/explore/v2.1/catalog/datasets/rhein-kreis-neuss-2022-unfallatlas/records" }
+ *   ]
  * }
  *
  * @param {Object} configdata
@@ -86,6 +88,17 @@ async function fetchOdasResource(targetUrl, configdata = {}) {
   }
 }
 
+/**
+ * Löst eine benannte Datenressource aus configdata.apiurls auf.
+ * Neue apiurls-Form (typ: "array"); das frühere skalare apiurl wird nicht mehr gelesen.
+ * @returns {string} getrimmte URL, oder "" für den Zustand "keine Quelle konfiguriert"
+ */
+function getOdasApiUrl(configdata, name) {
+  const liste = Array.isArray(configdata && configdata.apiurls) ? configdata.apiurls : [];
+  const treffer = liste.find((eintrag) => eintrag && eintrag.name === name);
+  return String((treffer && treffer.url) || "").trim();
+}
+
 async function fetchOdasJson(targetUrl, configdata = {}) {
   const rawContent = await fetchOdasResource(targetUrl, configdata);
   try {
@@ -117,14 +130,14 @@ function app(configdata = {}, enclosingHtmlDivElement) {
   const previousCleanup = uaCleanups.get(enclosingHtmlDivElement);
   if (previousCleanup) previousCleanup();
 
-  const quelle = String(configdata.apiurl || "").trim();
+  const quelle = getOdasApiUrl(configdata, "unfaelle");
   if (!quelle || /^\{\{.*\}\}$/.test(quelle) || /^<.*>$/.test(quelle)) {
     enclosingHtmlDivElement.innerHTML =
       '<div class="alert alert-info" role="alert">Es ist keine Datenquelle konfiguriert.</div>';
     return null;
   }
 
-  const BASE_URL = configdata.apiurl;
+  const BASE_URL = getOdasApiUrl(configdata, "unfaelle");
 
   let disposed = false;
   let mapCleanup = null;

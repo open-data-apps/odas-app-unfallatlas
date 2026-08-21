@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.22.0 - 2026-08-21
+- **CHG:** Skalares `apiurl` durch das Array-Feld `apiurls` ersetzt (`typ: "array"`, Eintrag `unfaelle`). Neuer Standard portfolioweit; `apiurl` entfällt. `app.js` liest die Datenquelle jetzt über `getOdasApiUrl(configdata, "unfaelle")`.
 
 ## 1.21.0 - 2026-08-20
 
