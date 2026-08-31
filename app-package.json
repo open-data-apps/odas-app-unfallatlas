@@ -1,133 +1,14 @@
 {
-  "app-entwickler-id": "12343",
-  "app-entwickler-name": "ondics-gmbh",
-  "name-in-url": "unfallatlas",
-  "name": "Unfallatlas",
-  "app-version": "1.24.0",
-  "app-package-version": "2",
-  "odas-app-icon": "assets/odas-app-icon.svg",
-  "app-icon": "assets/odas-app-icon.svg",
-  "kurzbeschreibung": "Interaktive Karte und Analyse von Verkehrsunfällen (Datensatz 2022).",
-  "beschreibung": [
-    "_multiline_",
-    "Die Unfallatlas-App macht Verkehrsunfälle des Jahres 2022 im Rhein-Kreis Neuss auf einer interaktiven Karte sichtbar und ergänzt sie um Kennzahlen und eine durchsuchbare Tabelle.",
-    "",
-    "Bürger:innen und Fachstellen können Unfallschwere, beteiligte Verkehrsarten, Kommunen und weitere Merkmale filtern und so räumliche Muster schneller erkennen.",
-    "",
-    "Für wen ist diese App? Sie richtet sich an Bürger:innen, Verkehrsplanung, Verwaltung, Medien und Initiativen, die Unfallhäufungen und Verkehrssicherheit besser verstehen möchten – besondere Datenkenntnisse sind nicht erforderlich.",
-    "",
-    "## Methodik",
-    "",
-    "Die App lädt den Datensatz Unfallatlas 2022 des Rhein-Kreis Neuss über die OpenDataSoft Records API v2.1 im JSON-Format.",
-    "",
-    "Die API wird paginiert mit `limit=100` und `offset` abgefragt, bis `total_count` erreicht ist. Der Abruf erfolgt je nach Konfiguration direkt aus dem Browser oder über den ODAS-Proxy (`proxyAktiv`); bei `proxyAktiv: ja` sendet die App einen `POST` an `/odp-data?path=...` mit URL-kodiertem Pfad, sonst per `GET` direkt.",
-    "",
-    "Serverseitig filterbar sind Kommune (`kommune LIKE '%...%'`) und Unfallschwere (`ukategorie`), clientseitig werden Beteiligte (`istrad`, `istfuss`, `istkrad`, `istpkw`, `istgkfz`) und Lichtverhältnisse (`ulichtverh`: Tageslicht, Dämmerung, Dunkelheit) auf dem bereits geladenen Bestand gefiltert.",
-    "",
-    "Die Karte nutzt Leaflet mit OpenStreetMap-Kacheln von `tile.openstreetmap.org` und zeigt jeden Unfall als einzelnen Marker ohne Clustering.",
-    "",
-    "Kartenbild, Tabelle und die sieben KPI-Kacheln beziehen sich stets auf die aktuell gefilterte Auswahl – alle Zählungen (mit Getöteten, Schwerverletzten, Leichtverletzten, Fahrrad, Fußgänger, häufigste Stunde und Gesamtzahl) beruhen auf dem gefilterten Bestand.",
-    "",
-    "Die Liste ist nach allen relevanten Spalten sortierbar; ein Klick auf eine Zeile zentriert die Karte auf die Koordinaten und öffnet das Popup des zugehörigen Markers.",
-    "",
-    "Der Datenstand wird best-effort aus den Katalog-Metadaten (`metas.modified`) der OpenDataSoft-API gelesen und angezeigt. Es gibt keinen Datumsbereichsfilter und kein Polling; die App lädt beim Start und nach serverseitigen Filteränderungen erneut. Ein erneuter Abruf macht die statischen Inhalte von 2022 nicht aktuell – Verfügbarkeit und Vollständigkeit sind quellenabhängig. CSV wird nicht unterstützt, nur JSON.",
-    "",
-    "## Datenquelle",
-    "",
-    "Die Daten werden aus dem Open-Data-Angebot des Rhein-Kreises Neuss geladen und in der App kartografisch sowie tabellarisch aufbereitet.",
-    "",
-    "- **Open Data Portal:** [Open Data Rhein-Kreis Neuss](https://opendata.rhein-kreis-neuss.de/)",
-    "- **Datensatz:** [Unfallatlas 2022](https://opendata.rhein-kreis-neuss.de/explore/dataset/rhein-kreis-neuss-2022-unfallatlas/information/)",
-    "- **Ressource/API-Endpunkt:** [OpenDataSoft Records API](https://opendata.rhein-kreis-neuss.de/api/explore/v2.1/catalog/datasets/rhein-kreis-neuss-2022-unfallatlas/records)",
-    "",
-    "Angezeigt werden die in der Quelle vorhandenen Unfälle; Verfügbarkeit und Vollständigkeit sind quellenabhängig. Ein erneuter Abruf lädt die Quelle erneut, macht aber den statischen 2022-Bestand nicht aktuell.",
-    "",
-    "## Open Data App",
-    "",
-    "Diese App ist eine Open Data App und kann im [Open Data App Store](https://open-data-app-store.de/) betrieben werden. Sie ist Open Source und lässt sich mit kompatiblen Unfalldatensätzen konfigurieren.",
-    "",
-    "- [Open Data App Store](https://open-data-app-store.de/) – die Plattform für Open Data Apps",
-    "- [Alle Open Data Apps auf GitHub](https://github.com/open-data-apps) – die Organisation mit allen Apps",
-    "- [odas-app-unfallatlas](https://github.com/open-data-apps/odas-app-unfallatlas) – das Repository dieser App"
-  ],
-  "tags-funktion": [
-    "Kartenvisualisierung",
-    "Sicherheitsanalyse"
-  ],
-  "tags-dateityp": [
-    "JSON"
-  ],
-  "tags-datenart": [
-    "Verkehr",
-    "Unfall"
-  ],
-  "screenshots": [
-    "assets/Desktop_Screenshot.png",
-    "assets/Mobile_Screenshot.png"
-  ],
-  "branding-css": "",
-  "api-version": "1",
-  "instanz-config": {
-    "seitentitel": {
-      "label": "Seitentitel",
-      "category": "allgemein",
-      "hilfe": "Der Seitentitel wird im Browser-Tab der App angezeigt",
-      "default": "Unfallatlas",
-      "format": {
-        "typ": "string",
-        "laenge": 50
-      },
-      "erforderlich": "ja"
-    },
-    "titel": {
-      "label": "Titel",
-      "category": "allgemein",
-      "hilfe": "Der Titel wird in der Titelzeile der App angezeigt",
-      "default": "Unfallatlas 2022",
-      "format": {
-        "typ": "string",
-        "laenge": 50
-      },
-      "erforderlich": "ja"
-    },
-    "icon": {
-      "label": "App-Icon",
-      "category": "allgemein",
-      "hilfe": "Das Icon wird links oben in der Titelzeile angezeigt",
-      "default": "{{{odp.logo}}}",
-      "format": {
-        "typ": "image",
-        "hoehe": 100,
-        "breite": 300
-      },
-      "erforderlich": "ja"
-    },
-    "kontakt": {
-      "label": "Kontakt",
-      "category": "kontakt-rechtliches",
-      "hilfe": "Der Text wird im Menüpunkt 'Kontakt' anzeigt",
-      "format": {
-        "typ": "markdown"
-      },
-      "default": [
-        "_multiline_",
-        "Sie sind zufrieden mit der App oder haben Anregungen, Verbesserungen oder Hinweise, die Sie uns mitteilen möchten?",
-        "",
-        "Dann richten Sie sich gerne an uns. Wir freuen uns über alle Nachrichten. Ihre Nachrichten können Sie uns mitteilen über:",
-        "",
-        "- Tel.: [{{odp.anbieter.tel}}](tel:{{odp.anbieter.tel}})",
-        "- E-Mail: [{{odp.anbieter.email}}](mailto:{{odp.anbieter.email}})"
-      ],
-      "erforderlich": "ja"
-    },
-    "beschreibung": {
-      "label": "Beschreibung",
-      "category": "beschreibung",
-      "hilfe": "Der Text wird im Menüpunkt 'Über diese App' anzeigt",
-      "format": {
-        "typ": "markdown"
-      },
-      "default": [
+    "app-entwickler-id": "12343",
+    "app-entwickler-name": "ondics-gmbh",
+    "name-in-url": "unfallatlas",
+    "name": "Unfallatlas",
+    "app-version": "1.24.0",
+    "app-package-version": "2",
+    "odas-app-icon": "assets/odas-app-icon.svg",
+    "app-icon": "assets/odas-app-icon.svg",
+    "kurzbeschreibung": "Interaktive Karte und Analyse von Verkehrsunfällen (Datensatz 2022).",
+    "beschreibung": [
         "_multiline_",
         "Die Unfallatlas-App macht Verkehrsunfälle des Jahres 2022 im Rhein-Kreis Neuss auf einer interaktiven Karte sichtbar und ergänzt sie um Kennzahlen und eine durchsuchbare Tabelle.",
         "",
@@ -157,7 +38,7 @@
         "",
         "- **Open Data Portal:** [Open Data Rhein-Kreis Neuss](https://opendata.rhein-kreis-neuss.de/)",
         "- **Datensatz:** [Unfallatlas 2022](https://opendata.rhein-kreis-neuss.de/explore/dataset/rhein-kreis-neuss-2022-unfallatlas/information/)",
-        "- **Ressource/API-Endpunkt:** [OpenDataSoft Records API](https://opendata.rhein-kreis-neuss.de/api/explore/v2.1/catalog/datasets/rhein-kreis-neuss-2022-unfallatlas/records)",
+        "- **Ressource/API-Endpunkt:** [OpenDataSoft Records API]({{{appinstanz.apiurls.1}}})",
         "",
         "Angezeigt werden die in der Quelle vorhandenen Unfälle; Verfügbarkeit und Vollständigkeit sind quellenabhängig. Ein erneuter Abruf lädt die Quelle erneut, macht aber den statischen 2022-Bestand nicht aktuell.",
         "",
@@ -168,266 +49,385 @@
         "- [Open Data App Store](https://open-data-app-store.de/) – die Plattform für Open Data Apps",
         "- [Alle Open Data Apps auf GitHub](https://github.com/open-data-apps) – die Organisation mit allen Apps",
         "- [odas-app-unfallatlas](https://github.com/open-data-apps/odas-app-unfallatlas) – das Repository dieser App"
-      ],
-      "erforderlich": "ja"
-    },
-    "impressum": {
-      "label": "Impressum",
-      "category": "kontakt-rechtliches",
-      "hilfe": "Der Text wird im Menüpunkt 'Impressum' anzeigt",
-      "format": {
-        "typ": "markdown"
-      },
-      "default": [
-        "_multiline_",
-        "## Anbieter",
-        "",
-        "{{{odp.anbieter.orgName}}}  ",
-        "{{{odp.anbieter.orgUnit}}}",
-        "",
-        "{{odp.anbieter.strasse}}  ",
-        "{{odp.anbieter.plzort}}",
-        "",
-        "Website: [{{odp.anbieter.url}}]({{odp.anbieter.url}})",
-        "",
-        "## Ansprechpartner",
-        "",
-        "{{odp.anbieter.kontakt-bezeichnung}}  ",
-        "{{odp.anbieter.name}}",
-        "",
-        "## Kontakt",
-        "",
-        "Tel.: {{odp.anbieter.tel}}  ",
-        "E-Mail: [{{odp.anbieter.email}}](mailto:{{odp.anbieter.email}})"
-      ],
-      "erforderlich": "ja"
-    },
-    "datenschutz": {
-      "label": "Datenschutz",
-      "category": "kontakt-rechtliches",
-      "hilfe": "Der Text wird im Menüpunkt 'Datenschutz' anzeigt",
-      "format": {
-        "typ": "markdown"
-      },
-      "default": [
-        "_multiline_",
-        "Diese App verarbeitet die angezeigten offenen Daten ausschließlich im Browser. Es werden keine Cookies gesetzt, keine Nutzungsstatistiken erhoben und keine Daten im Browser gespeichert.",
-        "",
-        "Alle für die Darstellung benötigten Programmbibliotheken werden mit der App ausgeliefert. Beim Aufruf werden dafür keine externen Server kontaktiert.",
-        "",
-        "Die angezeigten Daten werden vom Browser direkt aus der konfigurierten Datenquelle geladen. Dabei werden technisch bedingt IP-Adresse und Browserkennung an deren Betreiber übermittelt. Maßgeblich ist der Schalter `proxyAktiv` der Instanz-Konfiguration.",
-        "",
-        "## Beim Aufruf kontaktierte Drittanbieter",
-        "",
-        "Folgende externe Server werden kontaktiert. Dabei werden IP-Adresse und User-Agent der Besucher:innen an diese Anbieter übertragen:",
-        "",
-        "- **tile.openstreetmap.org** — Kartenkacheln (OpenStreetMap)"
-      ],
-      "erforderlich": "ja"
-    },
-    "urlDaten": {
-      "label": "URL zum Datensatz im ODP",
-      "category": "datenherkunft",
-      "hilfe": "Der Datensatz im Open Data Portal mit den Daten der Unfallatlas-App",
-      "format": {
-        "typ": "url"
-      },
-      "default": "",
-      "beispiel": "https://opendata.rhein-kreis-neuss.de/explore/dataset/rhein-kreis-neuss-2022-unfallatlas/",
-      "erforderlich": "ja"
-    },
-    "fusszeile": {
-      "label": "Fußzeile",
-      "category": "kontakt-rechtliches",
-      "hilfe": "Wird auf der Website unten in der Fusszeile angezeigt.",
-      "format": {
-        "typ": "string",
-        "laenge": 50
-      },
-      "default": "(C) Copyright {{jahr}} | App & Daten: {{odp.anbieter.name}} | App-Entwickler: {{app.developer.name}} | ODAS: {{odas.betreiber.name}}",
-      "erforderlich": "ja"
-    },
-    "proxyAktiv": {
-      "label": "ODAS-Proxy aktivieren",
-      "category": "datenherkunft",
-      "hilfe": "Mit ja werden Datenabrufe über den ODAS-Proxy gesendet. Der Proxy ist nur im ODAS-Live-System verfügbar; Entwicklung und Standalone verwenden nein.",
-      "default": "nein",
-      "format": {
-        "typ": "dropdown",
-        "optionen": [
-          "nein",
-          "ja"
-        ]
-      },
-      "erforderlich": "ja"
-    },
-    "apiurls": {
-      "label": "URLs zu Datenressourcen",
-      "category": "datenherkunft",
-      "hilfe": "Direkter Download-, Datei- oder API-Endpunkt der tatsächlich verwendeten Datenquelle(n). Mehrere Einträge möglich.",
-      "typ": "array",
-      "format": {
-        "typ": "url",
-        "laenge": 500
-      },
-      "urls": [
-        {
-          "name": "unfaelle",
-          "label": "URL zu den Daten",
-          "default": "https://opendata.rhein-kreis-neuss.de/api/explore/v2.1/catalog/datasets/rhein-kreis-neuss-2022-unfallatlas/records",
-          "beispiel": "https://opendata.rhein-kreis-neuss.de/api/explore/v2.1/catalog/datasets/rhein-kreis-neuss-2022-unfallatlas/records",
-          "erforderlich": "ja"
+    ],
+    "tags-funktion": [
+        "Kartenvisualisierung",
+        "Sicherheitsanalyse"
+    ],
+    "tags-dateityp": [
+        "JSON"
+    ],
+    "tags-datenart": [
+        "Verkehr",
+        "Unfall"
+    ],
+    "screenshots": [
+        "assets/Desktop_Screenshot.png",
+        "assets/Mobile_Screenshot.png"
+    ],
+    "branding-css": "",
+    "api-version": "1",
+    "instanz-config": {
+        "seitentitel": {
+            "label": "Seitentitel",
+            "category": "allgemein",
+            "hilfe": "Der Seitentitel wird im Browser-Tab der App angezeigt",
+            "default": "Unfallatlas",
+            "format": {
+                "typ": "string",
+                "laenge": 50
+            },
+            "erforderlich": "ja"
+        },
+        "titel": {
+            "label": "Titel",
+            "category": "allgemein",
+            "hilfe": "Der Titel wird in der Titelzeile der App angezeigt",
+            "default": "Unfallatlas 2022",
+            "format": {
+                "typ": "string",
+                "laenge": 50
+            },
+            "erforderlich": "ja"
+        },
+        "icon": {
+            "label": "App-Icon",
+            "category": "allgemein",
+            "hilfe": "Das Icon wird links oben in der Titelzeile angezeigt",
+            "default": "{{{odp.logo}}}",
+            "format": {
+                "typ": "image",
+                "hoehe": 100,
+                "breite": 300
+            },
+            "erforderlich": "ja"
+        },
+        "kontakt": {
+            "label": "Kontakt",
+            "category": "kontakt-rechtliches",
+            "hilfe": "Der Text wird im Menüpunkt 'Kontakt' anzeigt",
+            "format": {
+                "typ": "markdown"
+            },
+            "default": [
+                "_multiline_",
+                "Sie sind zufrieden mit der App oder haben Anregungen, Verbesserungen oder Hinweise, die Sie uns mitteilen möchten?",
+                "",
+                "Dann richten Sie sich gerne an uns. Wir freuen uns über alle Nachrichten. Ihre Nachrichten können Sie uns mitteilen über:",
+                "",
+                "- Tel.: [{{odp.anbieter.tel}}](tel:{{odp.anbieter.tel}})",
+                "- E-Mail: [{{odp.anbieter.email}}](mailto:{{odp.anbieter.email}})"
+            ],
+            "erforderlich": "ja"
+        },
+        "beschreibung": {
+            "label": "Beschreibung",
+            "category": "beschreibung",
+            "hilfe": "Der Text wird im Menüpunkt 'Über diese App' anzeigt",
+            "format": {
+                "typ": "markdown"
+            },
+            "default": [
+                "_multiline_",
+                "Die Unfallatlas-App macht Verkehrsunfälle des Jahres 2022 im Rhein-Kreis Neuss auf einer interaktiven Karte sichtbar und ergänzt sie um Kennzahlen und eine durchsuchbare Tabelle.",
+                "",
+                "Bürger:innen und Fachstellen können Unfallschwere, beteiligte Verkehrsarten, Kommunen und weitere Merkmale filtern und so räumliche Muster schneller erkennen.",
+                "",
+                "Für wen ist diese App? Sie richtet sich an Bürger:innen, Verkehrsplanung, Verwaltung, Medien und Initiativen, die Unfallhäufungen und Verkehrssicherheit besser verstehen möchten – besondere Datenkenntnisse sind nicht erforderlich.",
+                "",
+                "## Methodik",
+                "",
+                "Die App lädt den Datensatz Unfallatlas 2022 des Rhein-Kreis Neuss über die OpenDataSoft Records API v2.1 im JSON-Format.",
+                "",
+                "Die API wird paginiert mit `limit=100` und `offset` abgefragt, bis `total_count` erreicht ist. Der Abruf erfolgt je nach Konfiguration direkt aus dem Browser oder über den ODAS-Proxy (`proxyAktiv`); bei `proxyAktiv: ja` sendet die App einen `POST` an `/odp-data?path=...` mit URL-kodiertem Pfad, sonst per `GET` direkt.",
+                "",
+                "Serverseitig filterbar sind Kommune (`kommune LIKE '%...%'`) und Unfallschwere (`ukategorie`), clientseitig werden Beteiligte (`istrad`, `istfuss`, `istkrad`, `istpkw`, `istgkfz`) und Lichtverhältnisse (`ulichtverh`: Tageslicht, Dämmerung, Dunkelheit) auf dem bereits geladenen Bestand gefiltert.",
+                "",
+                "Die Karte nutzt Leaflet mit OpenStreetMap-Kacheln von `tile.openstreetmap.org` und zeigt jeden Unfall als einzelnen Marker ohne Clustering.",
+                "",
+                "Kartenbild, Tabelle und die sieben KPI-Kacheln beziehen sich stets auf die aktuell gefilterte Auswahl – alle Zählungen (mit Getöteten, Schwerverletzten, Leichtverletzten, Fahrrad, Fußgänger, häufigste Stunde und Gesamtzahl) beruhen auf dem gefilterten Bestand.",
+                "",
+                "Die Liste ist nach allen relevanten Spalten sortierbar; ein Klick auf eine Zeile zentriert die Karte auf die Koordinaten und öffnet das Popup des zugehörigen Markers.",
+                "",
+                "Der Datenstand wird best-effort aus den Katalog-Metadaten (`metas.modified`) der OpenDataSoft-API gelesen und angezeigt. Es gibt keinen Datumsbereichsfilter und kein Polling; die App lädt beim Start und nach serverseitigen Filteränderungen erneut. Ein erneuter Abruf macht die statischen Inhalte von 2022 nicht aktuell – Verfügbarkeit und Vollständigkeit sind quellenabhängig. CSV wird nicht unterstützt, nur JSON.",
+                "",
+                "## Datenquelle",
+                "",
+                "Die Daten werden aus dem Open-Data-Angebot des Rhein-Kreises Neuss geladen und in der App kartografisch sowie tabellarisch aufbereitet.",
+                "",
+                "- **Open Data Portal:** [Open Data Rhein-Kreis Neuss](https://opendata.rhein-kreis-neuss.de/)",
+                "- **Datensatz:** [Unfallatlas 2022](https://opendata.rhein-kreis-neuss.de/explore/dataset/rhein-kreis-neuss-2022-unfallatlas/information/)",
+                "- **Ressource/API-Endpunkt:** [OpenDataSoft Records API]({{{appinstanz.apiurls.1}}})",
+                "",
+                "Angezeigt werden die in der Quelle vorhandenen Unfälle; Verfügbarkeit und Vollständigkeit sind quellenabhängig. Ein erneuter Abruf lädt die Quelle erneut, macht aber den statischen 2022-Bestand nicht aktuell.",
+                "",
+                "## Open Data App",
+                "",
+                "Diese App ist eine Open Data App und kann im [Open Data App Store](https://open-data-app-store.de/) betrieben werden. Sie ist Open Source und lässt sich mit kompatiblen Unfalldatensätzen konfigurieren.",
+                "",
+                "- [Open Data App Store](https://open-data-app-store.de/) – die Plattform für Open Data Apps",
+                "- [Alle Open Data Apps auf GitHub](https://github.com/open-data-apps) – die Organisation mit allen Apps",
+                "- [odas-app-unfallatlas](https://github.com/open-data-apps/odas-app-unfallatlas) – das Repository dieser App"
+            ],
+            "erforderlich": "ja"
+        },
+        "impressum": {
+            "label": "Impressum",
+            "category": "kontakt-rechtliches",
+            "hilfe": "Der Text wird im Menüpunkt 'Impressum' anzeigt",
+            "format": {
+                "typ": "markdown"
+            },
+            "default": [
+                "_multiline_",
+                "## Anbieter",
+                "",
+                "{{{odp.anbieter.orgName}}}  ",
+                "{{{odp.anbieter.orgUnit}}}",
+                "",
+                "{{odp.anbieter.strasse}}  ",
+                "{{odp.anbieter.plzort}}",
+                "",
+                "Website: [{{odp.anbieter.url}}]({{odp.anbieter.url}})",
+                "",
+                "## Ansprechpartner",
+                "",
+                "{{odp.anbieter.kontakt-bezeichnung}}  ",
+                "{{odp.anbieter.name}}",
+                "",
+                "## Kontakt",
+                "",
+                "Tel.: {{odp.anbieter.tel}}  ",
+                "E-Mail: [{{odp.anbieter.email}}](mailto:{{odp.anbieter.email}})"
+            ],
+            "erforderlich": "ja"
+        },
+        "datenschutz": {
+            "label": "Datenschutz",
+            "category": "kontakt-rechtliches",
+            "hilfe": "Der Text wird im Menüpunkt 'Datenschutz' anzeigt",
+            "format": {
+                "typ": "markdown"
+            },
+            "default": [
+                "_multiline_",
+                "Diese App verarbeitet die angezeigten offenen Daten ausschließlich im Browser. Es werden keine Cookies gesetzt, keine Nutzungsstatistiken erhoben und keine Daten im Browser gespeichert.",
+                "",
+                "Alle für die Darstellung benötigten Programmbibliotheken werden mit der App ausgeliefert. Beim Aufruf werden dafür keine externen Server kontaktiert.",
+                "",
+                "Die angezeigten Daten werden vom Browser direkt aus der konfigurierten Datenquelle geladen. Dabei werden technisch bedingt IP-Adresse und Browserkennung an deren Betreiber übermittelt. Maßgeblich ist der Schalter `proxyAktiv` der Instanz-Konfiguration.",
+                "",
+                "## Beim Aufruf kontaktierte Drittanbieter",
+                "",
+                "Folgende externe Server werden kontaktiert. Dabei werden IP-Adresse und User-Agent der Besucher:innen an diese Anbieter übertragen:",
+                "",
+                "- **tile.openstreetmap.org** — Kartenkacheln (OpenStreetMap)"
+            ],
+            "erforderlich": "ja"
+        },
+        "urlDaten": {
+            "label": "URL zum Datensatz im ODP",
+            "category": "datenherkunft",
+            "hilfe": "Der Datensatz im Open Data Portal mit den Daten der Unfallatlas-App",
+            "format": {
+                "typ": "url"
+            },
+            "default": "",
+            "beispiel": "https://opendata.rhein-kreis-neuss.de/explore/dataset/rhein-kreis-neuss-2022-unfallatlas/",
+            "erforderlich": "ja"
+        },
+        "fusszeile": {
+            "label": "Fußzeile",
+            "category": "kontakt-rechtliches",
+            "hilfe": "Wird auf der Website unten in der Fusszeile angezeigt.",
+            "format": {
+                "typ": "string",
+                "laenge": 50
+            },
+            "default": "(C) Copyright {{jahr}} | App & Daten: {{odp.anbieter.name}} | App-Entwickler: {{app.developer.name}} | ODAS: {{odas.betreiber.name}}",
+            "erforderlich": "ja"
+        },
+        "proxyAktiv": {
+            "label": "ODAS-Proxy aktivieren",
+            "category": "datenherkunft",
+            "hilfe": "Mit ja werden Datenabrufe über den ODAS-Proxy gesendet. Der Proxy ist nur im ODAS-Live-System verfügbar; Entwicklung und Standalone verwenden nein.",
+            "default": "nein",
+            "format": {
+                "typ": "dropdown",
+                "optionen": [
+                    "nein",
+                    "ja"
+                ]
+            },
+            "erforderlich": "ja"
+        },
+        "apiurls": {
+            "label": "URLs zu Datenressourcen",
+            "category": "datenherkunft",
+            "hilfe": "Direkter Download-, Datei- oder API-Endpunkt der tatsächlich verwendeten Datenquelle(n). Mehrere Einträge möglich.",
+            "typ": "array",
+            "format": {
+                "typ": "url",
+                "laenge": 500
+            },
+            "urls": [
+                {
+                    "name": "unfaelle",
+                    "label": "URL zu den Daten",
+                    "default": "https://opendata.rhein-kreis-neuss.de/api/explore/v2.1/catalog/datasets/rhein-kreis-neuss-2022-unfallatlas/records",
+                    "beispiel": "https://opendata.rhein-kreis-neuss.de/api/explore/v2.1/catalog/datasets/rhein-kreis-neuss-2022-unfallatlas/records",
+                    "erforderlich": "ja"
+                }
+            ]
+        },
+        "sprache": {
+            "label": "Sprache der App",
+            "category": "allgemein",
+            "hilfe": "Angabe der App-Sprache",
+            "default": "de",
+            "format": {
+                "typ": "dropdown",
+                "optionen": [
+                    "de"
+                ]
+            },
+            "erforderlich": "ja"
+        },
+        "weiterfuehrendeLinks": {
+            "label": "Weiterführende Links",
+            "category": "beschreibung",
+            "hilfe": "Verwandte Datensätze / Hintergrundquellen (HTML/Markdown). Leer = ausgeblendet.",
+            "format": {
+                "typ": "markdown"
+            },
+            "default": "- [Open Data Portal Rhein-Kreis Neuss](https://opendata.rhein-kreis-neuss.de/explore/dataset/rhein-kreis-neuss-2022-unfallatlas/information/)\n- [Unfallatlas – Statistische Ämter](https://unfallatlas.statistikportal.de/)",
+            "erforderlich": "nein"
+        },
+        "datenquelleHinweis": {
+            "label": "Methodik / Datenquelle-Hinweis",
+            "category": "beschreibung",
+            "hilfe": "Herkunft, Erhebungsmethode und Limitierungen (HTML/Markdown). Leer = ausgeblendet.",
+            "format": {
+                "typ": "markdown"
+            },
+            "default": "Die Unfalldaten stammen vom [Open Data Portal Rhein-Kreis-Neuss](https://opendata.rhein-kreis-neuss.de/) und basieren auf dem Unfallatlas 2022 der Statistischen Ämter des Bundes und der Länder.\n\nUnfallkategorien: Unfall mit Getöteten (mind. 1 Todesfall), Unfall mit Schwerverletzten (mind. 1 stationär Behandelter), Unfall mit Leichtverletzten (nur ambulant Behandelte). Die App lädt alle Datensätze paginiert (100 pro Seite) über die OpenDataSoft Records API v2.1 im JSON-Format.",
+            "erforderlich": "nein"
+        },
+        "datenStand": {
+            "label": "Datenstand",
+            "category": "beschreibung",
+            "hilfe": "Freitext-Hinweis zum Stand der Daten. Leer = ausgeblendet.",
+            "format": {
+                "typ": "string",
+                "laenge": 60
+            },
+            "default": "Stand: Abruf aus der konfigurierten Unfallatlas-Quelle",
+            "erforderlich": "nein"
+        },
+        "kpiKontext1": {
+            "label": "KPI-Erklärung 1: Unfälle mit Getöteten",
+            "category": "beschreibung",
+            "hilfe": "Erklärtext unter dem KPI-Wert. Leer = ausgeblendet.",
+            "format": {
+                "typ": "string",
+                "laenge": 250
+            },
+            "default": "Anzahl der Unfälle mit mindestens einem getöteten Verkehrsteilnehmer. Jeder dieser Unfälle wiegt besonders schwer.",
+            "erforderlich": "nein"
+        },
+        "kpiKontext2": {
+            "label": "KPI-Erklärung 2: Unfälle mit Schwerverletzten",
+            "category": "beschreibung",
+            "hilfe": "Erklärtext unter dem KPI-Wert. Leer = ausgeblendet.",
+            "format": {
+                "typ": "string",
+                "laenge": 250
+            },
+            "default": "Anzahl der Unfälle mit mindestens einer schwer verletzten Person. Schwerverletzte benötigen oft monatelange Behandlung.",
+            "erforderlich": "nein"
+        },
+        "kpiKontext3": {
+            "label": "KPI-Erklärung 3: Unfälle mit Leichtverletzten",
+            "category": "beschreibung",
+            "hilfe": "Erklärtext unter dem KPI-Wert. Leer = ausgeblendet.",
+            "format": {
+                "typ": "string",
+                "laenge": 250
+            },
+            "default": "Anzahl der Unfälle mit mindestens einer leicht verletzten Person. Auch leichte Verletzungen bedeuten Schmerz und Ausfallzeiten.",
+            "erforderlich": "nein"
+        },
+        "kpiKontext4": {
+            "label": "KPI-Erklärung 4: Fahrrad-Unfälle",
+            "category": "beschreibung",
+            "hilfe": "Erklärtext unter dem KPI-Wert. Leer = ausgeblendet.",
+            "format": {
+                "typ": "string",
+                "laenge": 250
+            },
+            "default": "Anzahl der Unfälle mit Radfahrer-Beteiligung — unabhängig von Verletzung oder Schuld. Zeigt das Risiko für den Radverkehr.",
+            "erforderlich": "nein"
+        },
+        "kpiKontext5": {
+            "label": "KPI-Erklärung 5: Fußgänger-Unfälle",
+            "category": "beschreibung",
+            "hilfe": "Erklärtext unter dem KPI-Wert. Leer = ausgeblendet.",
+            "format": {
+                "typ": "string",
+                "laenge": 250
+            },
+            "default": "Anzahl der Unfälle mit Fußgänger-Beteiligung. Ein Wert, der auf die Sicherheit von Schulwegen und Kreuzungen hinweist.",
+            "erforderlich": "nein"
+        },
+        "kpiKontext6": {
+            "label": "KPI-Erklärung 6: Häufigste Unfallstunde",
+            "category": "beschreibung",
+            "hilfe": "Erklärtext unter dem KPI-Wert. Leer = ausgeblendet.",
+            "format": {
+                "typ": "string",
+                "laenge": 250
+            },
+            "default": "Die Tagesstunde mit den meisten Unfällen. Gibt Hinweise auf typische Stoßzeiten oder risikoreiche Phasen im Tagesverlauf.",
+            "erforderlich": "nein"
+        },
+        "kpiKontext7": {
+            "label": "KPI-Erklärung 7: Alle Unfälle (gefiltert)",
+            "category": "beschreibung",
+            "hilfe": "Erklärtext unter dem KPI-Wert. Leer = ausgeblendet.",
+            "format": {
+                "typ": "string",
+                "laenge": 250
+            },
+            "default": "Gesamtzahl der Unfälle in der aktuellen Filterauswahl – alle KPI-Kacheln beziehen sich auf den gefilterten Bestand.",
+            "erforderlich": "nein"
+        },
+        "brandingCSS": {
+            "label": "Zusätzliches Branding-CSS",
+            "category": "sonstiges",
+            "hilfe": "Optionaler CSS-Code für die konkrete App-Instanz.",
+            "default": "",
+            "format": {
+                "typ": "string",
+                "laenge": 10000
+            },
+            "erforderlich": "nein"
+        },
+        "brandingCSSFile": {
+            "label": "Branding-CSS-Datei",
+            "category": "sonstiges",
+            "hilfe": "Optionale URL zu einer zusätzlichen CSS-Datei für die konkrete App-Instanz.",
+            "default": "",
+            "format": {
+                "typ": "url",
+                "laenge": 500
+            },
+            "erforderlich": "nein"
         }
-      ]
     },
-    "sprache": {
-      "label": "Sprache der App",
-      "category": "allgemein",
-      "hilfe": "Angabe der App-Sprache",
-      "default": "de",
-      "format": {
-        "typ": "dropdown",
-        "optionen": [
-          "de"
-        ]
-      },
-      "erforderlich": "ja"
-    },
-    "weiterfuehrendeLinks": {
-      "label": "Weiterführende Links",
-      "category": "beschreibung",
-      "hilfe": "Verwandte Datensätze / Hintergrundquellen (HTML/Markdown). Leer = ausgeblendet.",
-      "format": {
-        "typ": "markdown"
-      },
-      "default": "- [Open Data Portal Rhein-Kreis Neuss](https://opendata.rhein-kreis-neuss.de/explore/dataset/rhein-kreis-neuss-2022-unfallatlas/information/)\n- [Unfallatlas – Statistische Ämter](https://unfallatlas.statistikportal.de/)",
-      "erforderlich": "nein"
-    },
-    "datenquelleHinweis": {
-      "label": "Methodik / Datenquelle-Hinweis",
-      "category": "beschreibung",
-      "hilfe": "Herkunft, Erhebungsmethode und Limitierungen (HTML/Markdown). Leer = ausgeblendet.",
-      "format": {
-        "typ": "markdown"
-      },
-      "default": "Die Unfalldaten stammen vom [Open Data Portal Rhein-Kreis-Neuss](https://opendata.rhein-kreis-neuss.de/) und basieren auf dem Unfallatlas 2022 der Statistischen Ämter des Bundes und der Länder.\n\nUnfallkategorien: Unfall mit Getöteten (mind. 1 Todesfall), Unfall mit Schwerverletzten (mind. 1 stationär Behandelter), Unfall mit Leichtverletzten (nur ambulant Behandelte). Die App lädt alle Datensätze paginiert (100 pro Seite) über die OpenDataSoft Records API v2.1 im JSON-Format.",
-      "erforderlich": "nein"
-    },
-    "datenStand": {
-      "label": "Datenstand",
-      "category": "beschreibung",
-      "hilfe": "Freitext-Hinweis zum Stand der Daten. Leer = ausgeblendet.",
-      "format": {
-        "typ": "string",
-        "laenge": 60
-      },
-      "default": "Stand: Abruf aus der konfigurierten Unfallatlas-Quelle",
-      "erforderlich": "nein"
-    },
-    "kpiKontext1": {
-      "label": "KPI-Erklärung 1: Unfälle mit Getöteten",
-      "category": "beschreibung",
-      "hilfe": "Erklärtext unter dem KPI-Wert. Leer = ausgeblendet.",
-      "format": {
-        "typ": "string",
-        "laenge": 250
-      },
-      "default": "Anzahl der Unfälle mit mindestens einem getöteten Verkehrsteilnehmer. Jeder dieser Unfälle wiegt besonders schwer.",
-      "erforderlich": "nein"
-    },
-    "kpiKontext2": {
-      "label": "KPI-Erklärung 2: Unfälle mit Schwerverletzten",
-      "category": "beschreibung",
-      "hilfe": "Erklärtext unter dem KPI-Wert. Leer = ausgeblendet.",
-      "format": {
-        "typ": "string",
-        "laenge": 250
-      },
-      "default": "Anzahl der Unfälle mit mindestens einer schwer verletzten Person. Schwerverletzte benötigen oft monatelange Behandlung.",
-      "erforderlich": "nein"
-    },
-    "kpiKontext3": {
-      "label": "KPI-Erklärung 3: Unfälle mit Leichtverletzten",
-      "category": "beschreibung",
-      "hilfe": "Erklärtext unter dem KPI-Wert. Leer = ausgeblendet.",
-      "format": {
-        "typ": "string",
-        "laenge": 250
-      },
-      "default": "Anzahl der Unfälle mit mindestens einer leicht verletzten Person. Auch leichte Verletzungen bedeuten Schmerz und Ausfallzeiten.",
-      "erforderlich": "nein"
-    },
-    "kpiKontext4": {
-      "label": "KPI-Erklärung 4: Fahrrad-Unfälle",
-      "category": "beschreibung",
-      "hilfe": "Erklärtext unter dem KPI-Wert. Leer = ausgeblendet.",
-      "format": {
-        "typ": "string",
-        "laenge": 250
-      },
-      "default": "Anzahl der Unfälle mit Radfahrer-Beteiligung — unabhängig von Verletzung oder Schuld. Zeigt das Risiko für den Radverkehr.",
-      "erforderlich": "nein"
-    },
-    "kpiKontext5": {
-      "label": "KPI-Erklärung 5: Fußgänger-Unfälle",
-      "category": "beschreibung",
-      "hilfe": "Erklärtext unter dem KPI-Wert. Leer = ausgeblendet.",
-      "format": {
-        "typ": "string",
-        "laenge": 250
-      },
-      "default": "Anzahl der Unfälle mit Fußgänger-Beteiligung. Ein Wert, der auf die Sicherheit von Schulwegen und Kreuzungen hinweist.",
-      "erforderlich": "nein"
-    },
-    "kpiKontext6": {
-      "label": "KPI-Erklärung 6: Häufigste Unfallstunde",
-      "category": "beschreibung",
-      "hilfe": "Erklärtext unter dem KPI-Wert. Leer = ausgeblendet.",
-      "format": {
-        "typ": "string",
-        "laenge": 250
-      },
-      "default": "Die Tagesstunde mit den meisten Unfällen. Gibt Hinweise auf typische Stoßzeiten oder risikoreiche Phasen im Tagesverlauf.",
-      "erforderlich": "nein"
-    },
-    "kpiKontext7": {
-      "label": "KPI-Erklärung 7: Alle Unfälle (gefiltert)",
-      "category": "beschreibung",
-      "hilfe": "Erklärtext unter dem KPI-Wert. Leer = ausgeblendet.",
-      "format": {
-        "typ": "string",
-        "laenge": 250
-      },
-      "default": "Gesamtzahl der Unfälle in der aktuellen Filterauswahl – alle KPI-Kacheln beziehen sich auf den gefilterten Bestand.",
-      "erforderlich": "nein"
-    },
-    "brandingCSS": {
-      "label": "Zusätzliches Branding-CSS",
-      "category": "sonstiges",
-      "hilfe": "Optionaler CSS-Code für die konkrete App-Instanz.",
-      "default": "",
-      "format": {
-        "typ": "string",
-        "laenge": 10000
-      },
-      "erforderlich": "nein"
-    },
-    "brandingCSSFile": {
-      "label": "Branding-CSS-Datei",
-      "category": "sonstiges",
-      "hilfe": "Optionale URL zu einer zusätzlichen CSS-Datei für die konkrete App-Instanz.",
-      "default": "",
-      "format": {
-        "typ": "url",
-        "laenge": 500
-      },
-      "erforderlich": "nein"
+    "daten": {
+        "beschreibung": "Die App verarbeitet den OpenDataSoft Records API v2.1 JSON-Endpunkt des Rhein-Kreis Neuss Unfallatlas 2022 (paginiert mit 100 pro Seite bis total_count).",
+        "schema": "assets/schema.json",
+        "beispiel": "",
+        "beispiel-url": ""
     }
-  },
-  "daten": {
-    "beschreibung": "Die App verarbeitet den OpenDataSoft Records API v2.1 JSON-Endpunkt des Rhein-Kreis Neuss Unfallatlas 2022 (paginiert mit 100 pro Seite bis total_count).",
-    "schema": "assets/schema.json",
-    "beispiel": "",
-    "beispiel-url": ""
-  }
 }
