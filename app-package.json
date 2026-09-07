@@ -3,7 +3,7 @@
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "unfallatlas",
   "name": "Unfallatlas",
-  "app-version": "1.24.0",
+  "app-version": "1.24.1",
   "app-package-version": "2",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "assets/odas-app-icon.svg",
@@ -232,7 +232,7 @@
       "format": {
         "typ": "url"
       },
-      "default": "",
+      "default": "https://opendata.rhein-kreis-neuss.de/explore/dataset/rhein-kreis-neuss-2022-unfallatlas/table/",
       "beispiel": "https://opendata.rhein-kreis-neuss.de/explore/dataset/rhein-kreis-neuss-2022-unfallatlas/",
       "erforderlich": "ja"
     },
@@ -427,7 +427,7 @@
   "daten": {
     "beschreibung": "Die App verarbeitet den OpenDataSoft Records API v2.1 JSON-Endpunkt des Rhein-Kreis Neuss Unfallatlas 2022 (paginiert mit 100 pro Seite bis total_count).",
     "schema": "assets/schema.json",
-    "beispiel": "",
-    "beispiel-url": ""
+    "beispiel": "OpenDataSoft-Records-Antwort mit results[] und total_count (JSON) — Schema beschreibt die Unfalldatensätze.",
+    "beispiel-url": "https://opendata.rhein-kreis-neuss.de/api/explore/v2.1/catalog/datasets/rhein-kreis-neuss-2022-unfallatlas/records?limit=5"
   }
 }

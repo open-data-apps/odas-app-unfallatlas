@@ -9,7 +9,8 @@
       "description": "Wird in der App verwendet",
       "constraints": {
         "required": true
-      }
+      },
+      "title": "Kommune"
     },
     {
       "name": "geo_point_2d",
@@ -17,7 +18,8 @@
       "description": "Wird in der App verwendet",
       "constraints": {
         "required": true
-      }
+      },
+      "title": "Standort (lon/lat)"
     },
     {
       "name": "geo_shape",
@@ -25,7 +27,8 @@
       "description": "Optionales Feld",
       "constraints": {
         "required": false
-      }
+      },
+      "title": "Standort-Geometrie"
     },
     {
       "name": "umonat",
@@ -33,7 +36,8 @@
       "description": "Wird in der App verwendet",
       "constraints": {
         "required": true
-      }
+      },
+      "title": "Unfallmonat"
     },
     {
       "name": "ustunde",
@@ -41,7 +45,8 @@
       "description": "Wird in der App verwendet",
       "constraints": {
         "required": true
-      }
+      },
+      "title": "Unfallstunde"
     },
     {
       "name": "uwochentag",
@@ -49,7 +54,8 @@
       "description": "Wird in der App verwendet",
       "constraints": {
         "required": true
-      }
+      },
+      "title": "Wochentag"
     },
     {
       "name": "ukategorie",
@@ -57,7 +63,8 @@
       "description": "Wird in der App verwendet",
       "constraints": {
         "required": true
-      }
+      },
+      "title": "Unfallkategorie"
     },
     {
       "name": "uart",
@@ -65,7 +72,8 @@
       "description": "Wird in der App verwendet",
       "constraints": {
         "required": true
-      }
+      },
+      "title": "Unfallart"
     },
     {
       "name": "utyp1",
@@ -73,7 +81,8 @@
       "description": "Wird in der App verwendet",
       "constraints": {
         "required": true
-      }
+      },
+      "title": "Unfalltyp 1"
     },
     {
       "name": "ulichtverh",
@@ -81,7 +90,8 @@
       "description": "Wird in der App verwendet",
       "constraints": {
         "required": true
-      }
+      },
+      "title": "Lichtverhältnisse"
     },
     {
       "name": "istrad",
@@ -89,7 +99,8 @@
       "description": "Wird in der App verwendet",
       "constraints": {
         "required": true
-      }
+      },
+      "title": "Beteiligung Rad"
     },
     {
       "name": "istpkw",
@@ -97,7 +108,8 @@
       "description": "Wird in der App verwendet",
       "constraints": {
         "required": true
-      }
+      },
+      "title": "Beteiligung Pkw"
     },
     {
       "name": "istfuss",
@@ -105,7 +117,8 @@
       "description": "Wird in der App verwendet",
       "constraints": {
         "required": true
-      }
+      },
+      "title": "Beteiligung Fußgänger"
     },
     {
       "name": "istkrad",
@@ -113,7 +126,8 @@
       "description": "Wird in der App verwendet",
       "constraints": {
         "required": true
-      }
+      },
+      "title": "Beteiligung Kraftrad"
     },
     {
       "name": "istgkfz",
@@ -121,7 +135,8 @@
       "description": "Wird in der App verwendet",
       "constraints": {
         "required": true
-      }
+      },
+      "title": "Beteiligung Güter-Kfz"
     },
     {
       "name": "istsonstig",
@@ -129,7 +144,8 @@
       "description": "Optionales Feld",
       "constraints": {
         "required": false
-      }
+      },
+      "title": "Beteiligung Sonstige"
     },
     {
       "name": "uland",
@@ -137,7 +153,8 @@
       "description": "Optionales Feld",
       "constraints": {
         "required": false
-      }
+      },
+      "title": "Bundesland"
     },
     {
       "name": "uregbez",
@@ -145,7 +162,8 @@
       "description": "Optionales Feld",
       "constraints": {
         "required": false
-      }
+      },
+      "title": "Regierungsbezirk"
     },
     {
       "name": "ukreis",
@@ -153,7 +171,8 @@
       "description": "Optionales Feld",
       "constraints": {
         "required": false
-      }
+      },
+      "title": "Kreis"
     },
     {
       "name": "iststrasse",
@@ -161,7 +180,8 @@
       "description": "Optionales Feld",
       "constraints": {
         "required": false
-      }
+      },
+      "title": "Straßenlage"
     }
   ]
 }
