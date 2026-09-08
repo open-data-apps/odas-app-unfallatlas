@@ -1,6 +1,7 @@
 # Changelog
 
 ## 1.24.1 - 2026-09-07
+- **FIX:** Variante-A-Verdrahtung (F-92): Typprüfung (ods21) vor dem ersten Fetch; Quellen- und Ladefehler über `renderOdasFehler` (1.24.1 -> 1.24.2).
 - **FIX:** Frictionless-Härtung: 20 Schema-Titel ergänzt (Typen per Code-Lesung bestätigt: Flags als `string`-Vergleich, Geo als Objekt); `daten.beispiel`/`beispiel-url` befüllt; `urlDaten` gesetzt. Records-Default bleibt (4B-Ausnahme, Rot-Beleg im REPORT).
 
 ## 1.24.0 - 2026-08-25

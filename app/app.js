@@ -291,12 +291,32 @@ function app(configdata = {}, enclosingHtmlDivElement) {
 
   const quelle = getOdasApiUrl(configdata, "unfaelle");
   if (!quelle || /^\{\{.*\}\}$/.test(quelle) || /^<.*>$/.test(quelle)) {
-    enclosingHtmlDivElement.innerHTML =
-      '<div class="alert alert-info" role="alert">Es ist keine Datenquelle konfiguriert.</div>';
+    renderOdasFehler(
+      enclosingHtmlDivElement,
+      new Error("Keine Datenquelle konfiguriert."),
+      {
+        url: quelle,
+        label: "Unfallatlas-API",
+        typLabel: "Open-Data-Suche (API v2.1)",
+        erwarteterTyp: "ods21",
+      },
+    );
     return null;
   }
 
   const BASE_URL = getOdasApiUrl(configdata, "unfaelle");
+
+  // Variante A (F-92): Typprüfung vor dem ersten Fetch.
+  const uaTypWarn = validateUrlTypErwartung(BASE_URL, "ods21");
+  if (uaTypWarn) {
+    renderOdasFehler(enclosingHtmlDivElement, new Error(uaTypWarn), {
+      url: BASE_URL,
+      label: "Unfallatlas-API",
+      typLabel: "Open-Data-Suche (API v2.1)",
+      erwarteterTyp: "ods21",
+    });
+    return null;
+  }
 
   let disposed = false;
   let mapCleanup = null;
@@ -873,7 +893,12 @@ function initMap(el, BASE_URL, configdata, uid) {
       .catch((err) => {
         if (destroyed || myToken !== requestToken) return;
         if (progressContainer) progressContainer.style.display = "none";
-        listEl.innerHTML = `<div class="alert alert-danger"><strong>Fehler beim Laden:</strong> ${escapeHtml(err.message)}</div>`;
+        renderOdasFehler(listEl, err, {
+          url: BASE_URL,
+          label: "Unfallatlas-API",
+          typLabel: "Open-Data-Suche (API v2.1)",
+          erwarteterTyp: "ods21",
+        });
         updateBadge(0);
       });
   }
