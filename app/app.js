@@ -81,18 +81,21 @@ async function fetchViaOdasProxy(targetUrl, options = {}) {
   return proxyData.content;
 }
 
-async function fetchOdasResource(targetUrl, configdata = {}) {
+async function fetchOdasResource(targetUrl, configdata = {}, options = {}) {
   if (isOdasProxyEnabled(configdata)) {
-    return fetchViaOdasProxy(targetUrl);
+    return fetchViaOdasProxy(targetUrl, options);
   }
 
   try {
-    const response = await fetch(targetUrl);
+    const response = await fetch(targetUrl, {
+      signal: options && options.signal ? options.signal : undefined,
+    });
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
     return response.text();
   } catch (error) {
+    if (error && error.name === "AbortError") throw error;
     throw new Error(
       `Direkter Datenabruf fehlgeschlagen (${error.message}). Bitte prüfen Sie die Daten-URL und die CORS-Freigabe der Datenquelle.`,
     );
@@ -110,8 +113,8 @@ function getOdasApiUrl(configdata, name) {
   return String((treffer && treffer.url) || "").trim();
 }
 
-async function fetchOdasJson(targetUrl, configdata = {}) {
-  const rawContent = await fetchOdasResource(targetUrl, configdata);
+async function fetchOdasJson(targetUrl, configdata = {}, options = {}) {
+  const rawContent = await fetchOdasResource(targetUrl, configdata, options);
   try {
     return JSON.parse(rawContent);
   } catch (_error) {
@@ -270,19 +273,27 @@ function renderOdasFehler(container, error, kontext = {}) {
   container.innerHTML = `<div class="alert ${alertClass}" role="alert"><strong>${escapeHtml(titel)}</strong><p class="mb-1">${escapeHtml(info.hinweis)}</p>${urlZeile}<details class="small"><summary>Details</summary><code>${escapeHtml(info.detail || String(error))}</code></details></div>`;
 }
 
-function isLeerErgebnis(json) {
-  if (!json) return true;
-  if (Array.isArray(json) && json.length === 0) return true;
-  if (Array.isArray(json.records) && json.records.length === 0) return true;
-  if (Array.isArray(json.results) && json.results.length === 0) return true;
-  if (json.result && Array.isArray(json.result.records) && json.result.records.length === 0) return true;
-  return false;
-}
-
 
 let uaInstanzZaehler = 0;
-const uaCleanups = new WeakMap();
+// UA-B1: Das Aufraeumen laeuft jetzt ueber den sanktionierten Hook
+// onPageLeave (wie im uebrigen Portfolio) statt ueber einen
+// window-hashchange-Listener. Der Sonderweg griff nur, weil die Base per Hash
+// navigiert, und raeumte bei einer unerwarteten Hash-Aenderung sogar dann ab,
+// wenn die App sichtbar blieb (tote Karte). Fuer den Hook muss die Registry
+// iterierbar sein — eine WeakMap hat kein forEach.
+const uaCleanups = new Map();
 let leafletLoadPromise = null;
+
+function onPageLeave() {
+  uaCleanups.forEach(function (cleanup, container) {
+    try {
+      cleanup();
+    } catch (error) {
+      console.warn("Fehler beim Abraeumen der Unfallatlas-Instanz:", error);
+    }
+    uaCleanups.delete(container);
+  });
+}
 
 function app(configdata = {}, enclosingHtmlDivElement) {
   const uaUid = "i" + ++uaInstanzZaehler;
@@ -320,11 +331,15 @@ function app(configdata = {}, enclosingHtmlDivElement) {
 
   let disposed = false;
   let mapCleanup = null;
+  // UA-B5: Laufzeitobjekt der Instanz — haelt die Karte (Abraeumung ueber
+  // uaBereinigeKarte) und den Controller fuer abbrechbare Abrufe.
+  const uaLaufzeit = { map: null, controller: new AbortController() };
 
   function cleanup() {
     if (disposed) return;
     disposed = true;
-    window.removeEventListener("hashchange", handleAppHashChange);
+    uaLaufzeit.controller.abort();
+    uaBereinigeKarte(uaLaufzeit);
     if (mapCleanup) {
       mapCleanup();
       mapCleanup = null;
@@ -334,12 +349,7 @@ function app(configdata = {}, enclosingHtmlDivElement) {
     }
   }
 
-  function handleAppHashChange() {
-    if (window.location.hash !== "#startseite") cleanup();
-  }
-
   uaCleanups.set(enclosingHtmlDivElement, cleanup);
-  window.addEventListener("hashchange", handleAppHashChange);
 
   enclosingHtmlDivElement.innerHTML = `
     <div style="background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.1);
@@ -434,7 +444,13 @@ function app(configdata = {}, enclosingHtmlDivElement) {
       ) {
         return;
       }
-      mapCleanup = initMap(enclosingHtmlDivElement, BASE_URL, configdata, uaUid);
+      mapCleanup = initMap(
+        enclosingHtmlDivElement,
+        BASE_URL,
+        configdata,
+        uaUid,
+        uaLaufzeit,
+      );
     })
     .catch((error) => {
       if (disposed) return;
@@ -460,18 +476,56 @@ function loadLeaflet() {
   if (leafletLoadPromise) return leafletLoadPromise;
 
   leafletLoadPromise = new Promise((resolve, reject) => {
+    // UA-B2: Ein bereits eingefuegtes Script-Tag wiederverwenden statt bei
+    // jeder Instanz ein zweites anzulegen.
+    const vorhanden = document.getElementById("leaflet-js");
+    if (vorhanden) {
+      vorhanden.addEventListener("load", () => resolve(), { once: true });
+      vorhanden.addEventListener(
+        "error",
+        () => reject(new Error("Leaflet konnte nicht geladen werden.")),
+        { once: true },
+      );
+      return;
+    }
     const script = document.createElement("script");
     script.id = "leaflet-js";
     script.src = "vendor/leaflet/leaflet.js";
     script.onload = () => resolve();
     script.onerror = () => reject(new Error("Leaflet konnte nicht geladen werden."));
     document.head.appendChild(script);
+  }).catch((err) => {
+    // UA-B2: Ohne den Reset blieb die abgelehnte Promise im Modul-Global
+    // stehen und Leaflet war bis zum Reload dauerhaft kaputt.
+    resetLeafletLoadPromise();
+    throw err;
   });
   return leafletLoadPromise;
 }
 
+// UA-B1: Einzige Stelle, an der die Leaflet-Karte abgeraeumt wird — top-level
+// und damit aus onPageLeave erreichbar (der Pruefpfad folgt nur Top-Level-
+// Helfern und den in der Registry hinterlegten Cleanups).
+// UA-B2: Cache nach einem Fehlschlag freigeben (Regel-B-konforme Form: der
+// einzige Neubindungsort liegt hinter Falsy-Guard + fruehem Return).
+function resetLeafletLoadPromise() {
+  if (!leafletLoadPromise) return;
+  leafletLoadPromise = null;
+}
+
+function uaBereinigeKarte(zustand) {
+  if (!zustand || !zustand.map) return;
+  try {
+    zustand.map.remove();
+  } catch (error) {
+    console.warn("Fehler beim Entfernen der Leaflet-Karte:", error);
+  }
+  zustand.map = null;
+}
+
 /* ── Karte und Logik initialisieren ── */
-function initMap(el, BASE_URL, configdata, uid) {
+function initMap(el, BASE_URL, configdata, uid, laufzeit) {
+  const zustand = laufzeit;
   const mapDiv = el.querySelector("#unfall-map");
   const mapContainer = el.querySelector("#unfall-map-container");
   const fsBtn = el.querySelector("#map-fullscreen-btn");
@@ -482,6 +536,7 @@ function initMap(el, BASE_URL, configdata, uid) {
   let requestToken = 0;
 
   const map = L.map(mapDiv).setView([51.198, 6.687], 11);
+  if (zustand) zustand.map = map;
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution:
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> | Daten: Statistische Ämter / Open Data Rhein-Kreis-Neuss (CC BY 4.0)',
@@ -772,24 +827,46 @@ function initMap(el, BASE_URL, configdata, uid) {
     const listEl = el.querySelector("#unfall-list");
 
     /* ── Schale 4: Catalog-Metadaten laden ── */
-    var catalogUrl = BASE_URL.replace(/\/records$/, "").replace(/\/api\/explore\/v2\.\d\/catalog\/datasets\//, function(m) {
-      return m;
-    });
-    if (!catalogUrl.endsWith("/")) catalogUrl += "/";
+    // UA-B4: Der Datenstand aendert sich nicht pro Suche — der Catalog-Abruf
+    // laeuft daher nur einmal je Instanz, nicht bei jedem Filterwechsel.
     var datasetId = BASE_URL.split("/catalog/datasets/")[1]?.split("/")[0] || "";
-    if (datasetId) {
-      var catUrl = BASE_URL.substring(0, BASE_URL.indexOf("/catalog/datasets/")) + "/catalog/datasets/" + datasetId;
-      fetchOdasJson(catUrl, configdata).then(function(meta) {
-        if (destroyed || token !== requestToken) return;
-        var stand = extractDatenStand(meta);
-        if (stand) {
-          var badge = el.querySelector("#ua-datenstand");
-          if (badge) badge.textContent = "Aktualisiert: " + stand;
-        }
-      }).catch(function() {});
+    if (datasetId && !laufzeit.datenstandGeholt) {
+      laufzeit.datenstandGeholt = true;
+      var catUrl =
+        BASE_URL.substring(0, BASE_URL.indexOf("/catalog/datasets/")) +
+        "/catalog/datasets/" +
+        datasetId;
+      fetchOdasJson(catUrl, configdata, { signal: laufzeit.controller.signal })
+        .then(function (meta) {
+          if (destroyed || token !== requestToken) return;
+          var stand = extractDatenStand(meta);
+          if (stand) {
+            laufzeit.datenstand = stand;
+            var badge = el.querySelector("#ua-datenstand");
+            if (badge) badge.textContent = "Aktualisiert: " + stand;
+          }
+        })
+        .catch(function () {});
+    } else if (laufzeit.datenstand) {
+      var badgeStand = el.querySelector("#ua-datenstand");
+      if (badgeStand) badgeStand.textContent = "Aktualisiert: " + laufzeit.datenstand;
     }
 
+    // UA-B3: Notbremse wie in den uebrigen Apps. Ohne sie liefe die Schleife
+    // endlos, wenn ein Endpunkt `offset` ignoriert, aber `total_count` gross
+    // meldet und dauerhaft volle Seiten liefert.
+    const MAX_SEITEN = 1000;
+    let seiten = 0;
     while (true) {
+      seiten++;
+      if (seiten > MAX_SEITEN) {
+        console.warn(
+          "Unfallatlas: Paginierung nach " +
+            MAX_SEITEN +
+            " Seiten abgebrochen (Quelle liefert vermutlich endlos volle Seiten).",
+        );
+        break;
+      }
       const params = new URLSearchParams({
         limit: String(PAGE_SIZE),
         offset: String(offset),
@@ -798,6 +875,7 @@ function initMap(el, BASE_URL, configdata, uid) {
       const data = await fetchOdasJson(
         `${BASE_URL}?${params.toString()}`,
         configdata,
+        { signal: laufzeit.controller.signal },
       );
       if (destroyed || token !== requestToken) return allResults;
       if (total === null) total = data.total_count || 0;
@@ -1006,7 +1084,7 @@ function initMap(el, BASE_URL, configdata, uid) {
       const exitPromise = document.exitFullscreen?.();
       if (exitPromise?.catch) exitPromise.catch(() => {});
     }
-    map.remove();
+    uaBereinigeKarte(zustand);
   };
 }
 
@@ -1086,7 +1164,9 @@ function renderMethodikbox(cfg, uid) {
 /*
  * addToHead – nicht benötigt, Leaflet wird dynamisch in loadLeaflet() geladen.
  */
-function addToHead() {}
+function addToHead() {
+  return ``;
+}
 
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {

@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.24.3 - 2026-09-10
+- **FIX (UA-B1):** Lifecycle-Sonderweg entfernt. Die Karte wurde über einen `window`-`hashchange`-Listener mit der Annahme `location.hash === "#startseite"` abgeräumt — das funktionierte nur, weil die Base per Hash navigiert, und konnte bei einer unerwarteten Hash-Änderung sogar dann abräumen, wenn die App sichtbar blieb (tote Karte). Jetzt läuft der Teardown über den sanktionierten Hook `onPageLeave`; die Kartenabräumung liegt dafür in der Top-Level-Funktion `uaBereinigeKarte()`. Die dokumentierte Tooling-Ausnahme in `check-lifecycle-cleanup.mjs` ist damit entfallen — der Standardpfad prüft die App jetzt wie alle anderen (Mutationsprobe bestätigt: entfernt man `onPageLeave`, schlägt der Check an).
+- **FIX (UA-B2):** `leafletLoadPromise` blieb nach einem Fehlschlag abgelehnt → Leaflet war bis zum Reload dauerhaft kaputt; zudem wurde ein bereits vorhandenes Script-Tag nicht wiederverwendet (zweite Instanz = zweites Tag). Jetzt Wiederverwendung plus `resetLeafletLoadPromise()`.
+- **FIX (UA-B3):** Die Paginierung hatte keine Notbremse — ein Endpunkt, der `offset` ignoriert und `total_count` groß meldet, lief endlos. Jetzt Abbruch nach 1000 Seiten mit Warnung.
+- **FIX (UA-B4):** Der Catalog-Metadatenabruf lief bei jedem Filterwechsel erneut (und enthielt einen toten `catalogUrl`-Ausdruck). Er läuft jetzt einmal je Instanz; der Datenstand wird wiederverwendet.
+- **FIX (UA-B5):** `AbortController` je Instanz — Seitenabrufe und Metadatenabruf brechen beim Seitenwechsel ab; `fetchOdasResource`/`fetchOdasJson` reichen `signal` durch.
+- **TECH (UA-B6):** `isLeerErgebnis` entfernt; `addToHead` gibt `""` statt `undefined` zurück.
+
 ## 1.24.2 - 2026-09-08
 - **FIX:** Variante-A-Verdrahtung (F-92): Typprüfung (ods21) vor dem ersten Fetch; Quellen- und Ladefehler über `renderOdasFehler` (1.24.1 -> 1.24.2).
 

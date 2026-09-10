@@ -30,6 +30,8 @@ Die App kann lokal, eigenstaendig hinter einem Traefik-Reverse-Proxy oder ueber 
 - Statistik-Uebersicht: Kategorien, beteiligte Verkehrsmittel, haeufigste Stunde
 - Sortierbare Tabelle und Synchronisation mit Karten-Markern
 - Vollbildmodus fuer die Karte
+- Aufraeumen der Karte ueber den Standard-Hook `onPageLeave`; laufende Abrufe brechen beim Seitenwechsel ab
+- Pagination mit Notbremse (max. 1000 Seiten) und einmaligem Laden des Datenstands
 - Direkter Datenabruf in Entwicklung und Standalone-Betrieb
 - Optionaler ODAS-Proxy bei der Auslieferung ueber den ODAS
 
