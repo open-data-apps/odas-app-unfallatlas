@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.24.4 - 2026-10-02
+- ENH: Verwendete ODAS-Dienste in `odas-services` deklariert.
+
 ## 1.24.3 - 2026-09-10
 - **FIX (UA-B1):** Lifecycle-Sonderweg entfernt. Die Karte wurde über einen `window`-`hashchange`-Listener mit der Annahme `location.hash === "#startseite"` abgeräumt — das funktionierte nur, weil die Base per Hash navigiert, und konnte bei einer unerwarteten Hash-Änderung sogar dann abräumen, wenn die App sichtbar blieb (tote Karte). Jetzt läuft der Teardown über den sanktionierten Hook `onPageLeave`; die Kartenabräumung liegt dafür in der Top-Level-Funktion `uaBereinigeKarte()`. Die dokumentierte Tooling-Ausnahme in `check-lifecycle-cleanup.mjs` ist damit entfallen — der Standardpfad prüft die App jetzt wie alle anderen (Mutationsprobe bestätigt: entfernt man `onPageLeave`, schlägt der Check an).
 - **FIX (UA-B2):** `leafletLoadPromise` blieb nach einem Fehlschlag abgelehnt → Leaflet war bis zum Reload dauerhaft kaputt; zudem wurde ein bereits vorhandenes Script-Tag nicht wiederverwendet (zweite Instanz = zweites Tag). Jetzt Wiederverwendung plus `resetLeafletLoadPromise()`.
