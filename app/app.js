@@ -295,6 +295,9 @@ function onPageLeave() {
   });
 }
 
+// R2-004: Zeilen je Tabellenschritt (DOM-Umfang bei großen Beständen begrenzen).
+const UA_ZEILEN_SCHRITT = 200;
+
 function app(configdata = {}, enclosingHtmlDivElement) {
   const uaUid = "i" + ++uaInstanzZaehler;
   const previousCleanup = uaCleanups.get(enclosingHtmlDivElement);
@@ -666,6 +669,28 @@ function initMap(el, BASE_URL, configdata, uid, laufzeit) {
     currentGefiltert = unfaelle;
     const sorted = sortUnfaelle(unfaelle);
     const listEl = el.querySelector("#unfall-list");
+    // R2-004: Tabelle zeigt zunächst UA_ZEILEN_SCHRITT Zeilen, weitere auf Klick;
+    // Kennzahlen, Filter, Sortierung und Karte beziehen sich weiter auf alle Unfälle.
+    const idxMap = new Map(unfaelle.map((u, i) => [u, i]));
+    const zeileHtml = (u) => {
+      const origIdx = idxMap.get(u) ?? -1;
+      const coord = u.geo_point_2d;
+      const color = kategorieColor(u.ukategorie);
+      return `<tr style="cursor:${coord?.lat ? "pointer" : "default"}"
+              data-lat="${escapeHtml(coord?.lat || "")}"
+              data-lon="${escapeHtml(coord?.lon || "")}"
+              data-idx="${origIdx}">
+    <td class="fw-semibold" style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(u.kommune) || "–"}</td>
+    <td><span class="badge" style="background:${color}">${escapeHtml(u.ukategorie) || "–"}</span></td>
+    <td class="text-muted small" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(u.uart) || "–"}</td>
+    <td class="text-muted small">${escapeHtml(u.ulichtverh) || "–"}</td>
+    <td class="text-muted small">${u.uwochentag ? escapeHtml(u.uwochentag.substring(0, 2)) + "." : "–"} ${u.ustunde ? escapeHtml(u.ustunde) + ":00" : ""}</td>
+    <td>${getBeteiligte(u)}</td>
+  </tr>`;
+    };
+    const mehrButtonHtml = (angezeigt) => angezeigt < sorted.length
+      ? `<button type="button" class="btn btn-outline-secondary btn-sm mt-2 unfall-mehr">Weitere ${Math.min(UA_ZEILEN_SCHRITT, sorted.length - angezeigt).toLocaleString("de-DE")} anzeigen (${angezeigt.toLocaleString("de-DE")} von ${sorted.length.toLocaleString("de-DE")} angezeigt)</button>`
+      : "";
     if (unfaelle.length === 0) {
       listEl.innerHTML = `<div class="alert alert-warning">Keine Unfälle gefunden.</div>`;
       return;
@@ -743,45 +768,38 @@ function initMap(el, BASE_URL, configdata, uid, laufzeit) {
             </tr>
           </thead>
           <tbody>
-            ${(() => {
-              const idxMap = new Map(unfaelle.map((u, i) => [u, i]));
-              return sorted
-                .map((u) => {
-                  const origIdx = idxMap.get(u) ?? -1;
-                  const coord = u.geo_point_2d;
-                  const color = kategorieColor(u.ukategorie);
-                  return `<tr style="cursor:${coord?.lat ? "pointer" : "default"}"
-                          data-lat="${escapeHtml(coord?.lat || "")}"
-                          data-lon="${escapeHtml(coord?.lon || "")}"
-                          data-idx="${origIdx}">
-                <td class="fw-semibold" style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(u.kommune) || "–"}</td>
-                <td><span class="badge" style="background:${color}">${escapeHtml(u.ukategorie) || "–"}</span></td>
-                <td class="text-muted small" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(u.uart) || "–"}</td>
-                <td class="text-muted small">${escapeHtml(u.ulichtverh) || "–"}</td>
-                <td class="text-muted small">${u.uwochentag ? escapeHtml(u.uwochentag.substring(0, 2)) + "." : "–"} ${u.ustunde ? escapeHtml(u.ustunde) + ":00" : ""}</td>
-                <td>${getBeteiligte(u)}</td>
-              </tr>`;
-                })
-                .join("");
-            })()}
+            ${sorted.slice(0, UA_ZEILEN_SCHRITT).map(zeileHtml).join("")}
           </tbody>
         </table>
       </div>
+      <div class="unfall-mehr-wrap">${mehrButtonHtml(UA_ZEILEN_SCHRITT)}</div>
       ${renderWeitereInfos(configdata, uid)}
       ${renderMethodikbox(configdata, uid)}
     `;
 
-    listEl.querySelectorAll("tbody tr").forEach((row) => {
-      row.addEventListener("click", () => {
-        if (destroyed) return;
-        const lat = parseFloat(row.dataset.lat);
-        const lon = parseFloat(row.dataset.lon);
-        const idx = parseInt(row.dataset.idx);
-        if (!lat || !lon) return;
-        map.setView([lat, lon], 17);
-        markers.get(idx)?.marker.openPopup();
-        mapDiv.scrollIntoView({ behavior: "smooth", block: "center" });
-      });
+    // R2-004: ein delegierter Listener statt je Zeile; gilt auch für nachgeladene Zeilen.
+    const tbody = listEl.querySelector("tbody");
+    tbody.addEventListener("click", (event) => {
+      const row = event.target.closest("tr");
+      if (destroyed || !row) return;
+      const lat = parseFloat(row.dataset.lat);
+      const lon = parseFloat(row.dataset.lon);
+      const idx = parseInt(row.dataset.idx);
+      if (!lat || !lon) return;
+      map.setView([lat, lon], 17);
+      markers.get(idx)?.marker.openPopup();
+      mapDiv.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+
+    // Wrapper entsteht bei jedem Neuaufbau neu: keine Listener-Ansammlung auf listEl.
+    let angezeigt = Math.min(sorted.length, UA_ZEILEN_SCHRITT);
+    const mehrWrap = listEl.querySelector(".unfall-mehr-wrap");
+    mehrWrap.addEventListener("click", (event) => {
+      if (destroyed || !event.target.closest(".unfall-mehr")) return;
+      const naechste = sorted.slice(angezeigt, angezeigt + UA_ZEILEN_SCHRITT);
+      tbody.insertAdjacentHTML("beforeend", naechste.map(zeileHtml).join(""));
+      angezeigt += naechste.length;
+      mehrWrap.innerHTML = mehrButtonHtml(angezeigt);
     });
 
     listEl.querySelectorAll("thead th[data-sort]").forEach((th) => {

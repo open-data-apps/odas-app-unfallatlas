@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.24.7 - 2026-10-13
+- PERF: R2-004: Unfalltabelle zeigt zunächst 200 Zeilen, weitere per „Weitere anzeigen“; Kennzahlen, Filter, Sortierung und Karte beziehen sich weiter auf alle Unfälle. Ein delegierter Zeilen-Listener statt einem je Zeile. Filter-Reset bei 1.000 Unfällen ca. 100 → 60–70 ms, bei 5.000 ca. 665 → 450 ms.
+
 ## 1.24.6 - 2026-10-08
 - FIX: F-112: Unbekannte Antwortstrukturen als Formatfehler statt als leere Daten anzeigen; bekannte leere Listen bleiben gültig.
 
