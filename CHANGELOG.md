@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.24.6 - 2026-10-08
+- FIX: F-112: Unbekannte Antwortstrukturen als Formatfehler statt als leere Daten anzeigen; bekannte leere Listen bleiben gültig.
+
+## 1.24.5 - 2026-10-08
+- FIX: F-143: Seitenwiederholungen, vorzeitiges Ende und Seitenlimit sichtbar als unvollständigen Datenbestand melden; keine Doppelzählung.
+
 ## 1.24.4 - 2026-10-02
 - ENH: Verwendete ODAS-Dienste in `odas-services` deklariert.
 

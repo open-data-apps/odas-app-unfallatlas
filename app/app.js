@@ -824,6 +824,7 @@ function initMap(el, BASE_URL, configdata, uid, laufzeit) {
     let offset = 0;
     let total = null;
     let allResults = [];
+    const seenPageKeys = new Set();
     const listEl = el.querySelector("#unfall-list");
 
     /* ── Schale 4: Catalog-Metadaten laden ── */
@@ -860,12 +861,7 @@ function initMap(el, BASE_URL, configdata, uid, laufzeit) {
     while (true) {
       seiten++;
       if (seiten > MAX_SEITEN) {
-        console.warn(
-          "Unfallatlas: Paginierung nach " +
-            MAX_SEITEN +
-            " Seiten abgebrochen (Quelle liefert vermutlich endlos volle Seiten).",
-        );
-        break;
+        throw new Error("Datenbestand unvollständig: Das Seitenlimit wurde erreicht.");
       }
       const params = new URLSearchParams({
         limit: String(PAGE_SIZE),
@@ -878,8 +874,24 @@ function initMap(el, BASE_URL, configdata, uid, laufzeit) {
         { signal: laufzeit.controller.signal },
       );
       if (destroyed || token !== requestToken) return allResults;
-      if (total === null) total = data.total_count || 0;
-      const page = data.results || [];
+      // F-112: Nur ein explizites results-Array ist eine gültige ODS-Seite.
+      if (!data || !Array.isArray(data.results)) {
+        throw new Error("Unbekanntes Antwortformat: Unfallliste in results erwartet.");
+      }
+      if (total === null) total = data.total_count ?? null;
+      const page = data.results;
+      if (!page.length) {
+        if (total !== null && allResults.length < total) {
+          throw new Error("Datenbestand unvollständig: Die Quelle endet vor der angekündigten Gesamtmenge.");
+        }
+        break;
+      }
+      // F-143: Wiederholte Seiten nicht als weitere Unfälle zählen.
+      const pageKey = JSON.stringify(page.map(record => record._id ?? record.id ?? record.objectid ?? JSON.stringify(record)).sort());
+      if (seenPageKeys.has(pageKey)) {
+        throw new Error("Datenbestand unvollständig: Die Quelle wiederholt eine Seite.");
+      }
+      seenPageKeys.add(pageKey);
       allResults = allResults.concat(page);
       if (total > 0) {
         const pct = Math.min(
@@ -896,8 +908,8 @@ function initMap(el, BASE_URL, configdata, uid, laufzeit) {
         if (txt) txt.textContent = `Lade… ${allResults.length} / ${total}`;
         if (pctEl) pctEl.textContent = pct + "%";
       }
-      if (page.length < PAGE_SIZE || allResults.length >= total) break;
-      offset += PAGE_SIZE;
+      if (total !== null ? allResults.length >= total : page.length < PAGE_SIZE) break;
+      offset += page.length;
     }
     return allResults;
   }
