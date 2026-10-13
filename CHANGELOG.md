@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.24.8 - 2026-10-13
+- FIX: Standard-Fehleranzeige gibt präzisere Tipps: ein „Failed to fetch“ ohne Proxy-Kontext erhält einen Netzwerk-Hinweis statt `proxyAktiv`; der 404-Hinweis gilt nur noch für echte HTTP-404-Antworten und nennt den lokal fehlenden Proxy/Relay statt pauschal „Datensatz auf dem Portal nicht gefunden“.
+
 ## 1.24.7 - 2026-10-13
 - PERF: R2-004: Unfalltabelle zeigt zunächst 200 Zeilen, weitere per „Weitere anzeigen“; Kennzahlen, Filter, Sortierung und Karte beziehen sich weiter auf alle Unfälle. Ein delegierter Zeilen-Listener statt einem je Zeile. Filter-Reset bei 1.000 Unfällen ca. 100 → 60–70 ms, bei 5.000 ca. 665 → 450 ms.
 
