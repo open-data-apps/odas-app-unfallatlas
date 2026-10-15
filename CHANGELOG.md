@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.24.10 - 2026-10-15
+- FIX: Karten-Popups öffnen jetzt unterhalb der Kartensteuerung (Zoom-Knöpfe, Vollbild) statt darunter verdeckt.
+
 ## 1.24.9 - 2026-10-15
 - DOCS: Neue Store-Screenshots: je drei Desktop- (1440 × 1000) und Mobile-Aufnahmen (390 × 844) der aktuellen App, aufgenommen auf der Dev-Instanz. Bisherige Bilder nach `docs/screenshots/archive/2026-10-13/` verschoben. Keine Änderung an App-Code oder Konfiguration.
 

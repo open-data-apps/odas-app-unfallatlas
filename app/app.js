@@ -659,7 +659,7 @@ function initMap(el, BASE_URL, configdata, uid, laufzeit) {
            <tr><td class="text-muted">Monat</td><td>${u.umonat ? MONATE[parseInt(u.umonat)] || "Monat " + escapeHtml(u.umonat) : "–"}</td></tr>
          </table>
          <div class="mt-1">${getBeteiligte(u)}</div>`,
-        { maxWidth: 300 },
+        { maxWidth: 300, autoPanPaddingTopLeft: [10, 90], autoPanPaddingBottomRight: [10, 10] },
       );
       markerGroup.addLayer(marker);
       markers.set(i, { marker, unfall: u });
